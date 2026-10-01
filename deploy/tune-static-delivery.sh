@@ -21,6 +21,8 @@ if 'gzip_types ' not in text:
     gzip_vary on;
     gzip_min_length 1024;
     gzip_types text/css application/javascript application/json image/svg+xml;''')
+if 'image/avif avif;' not in text:
+    text = text.replace('    location ^~ /media/ {', '    location ^~ /media/ {\n        types { image/avif avif; image/webp webp; }')
 p.write_text(text)
 PY
 if ! nginx -t; then cp -a "$BACKUP" "$SITE"; exit 1; fi
