@@ -9,11 +9,16 @@ flock -w 60 9
 DOMAIN="$(cat "$BASE/domain")"
 ARCHIVE="$BASE/incoming/$RELEASE.tar.gz"
 TARGET="$BASE/releases/$RELEASE"
-test -f "$ARCHIVE"
+if [[ "${2:-}" != "--directory" ]]; then test -f "$ARCHIVE"; fi
 PREVIOUS=""
 if [[ -L "$BASE/current" ]]; then PREVIOUS="$(readlink -f "$BASE/current")"; fi
 
 if [[ ! -d "$TARGET" ]]; then
+  if [[ "${2:-}" == "--directory" ]]; then
+    STAGING="$BASE/incoming/$RELEASE"
+    test -s "$STAGING/dist/index.html"
+    test -z "$(find "$STAGING" -type l -print -quit)"
+  else
   STAGING="$(mktemp -d "$BASE/releases/.staging-XXXXXXXX")"
   # 只接受 dist/ 下的普通文件和目录，拒绝绝对路径、越界路径和链接。
   python3 - "$ARCHIVE" "$STAGING" <<'PY'
@@ -25,6 +30,7 @@ with tarfile.open(sys.argv[1], 'r:gz') as bundle:
             raise SystemExit('拒绝不安全的发布包条目')
     bundle.extractall(sys.argv[2])
 PY
+  fi
   test -s "$STAGING/dist/index.html"
   grep -q "$RELEASE" "$STAGING/dist/version.json"
   chmod -R u=rwX,go=rX "$STAGING"

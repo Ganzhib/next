@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { packageRelease, root } from './package-release.mjs';
@@ -36,8 +36,20 @@ const common = ['-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 
 if (key) common.push('-i', key, '-o', 'IdentitiesOnly=yes');
 const destination = `${user}@${host}`;
 console.log(`发布 ${release.slice(0, 12)} → https://${domain}`);
-run('scp', ['-P', port, ...common, archive, `${destination}:/opt/next/incoming/${release}.tar.gz`]);
-run('ssh', ['-p', port, ...common, destination, `/usr/local/bin/next-activate ${release}`]);
+if (process.argv.includes('--sync')) {
+  // CI 复用线上未变化的插画，只传输校验和不同的文件。current 在校验前保持不变。
+  const unpack = resolve(root, `deploy/dist/unpacked-${release}`);
+  mkdirSync(unpack, { recursive: true });
+  run('tar', ['-xzf', archive, '-C', unpack]);
+  run('ssh', ['-p', port, ...common, destination, `mkdir -p /opt/next/incoming/${release}/dist`]);
+  const transport = ['ssh', '-p', port, ...common].map(value => `'${value.replaceAll("'", "'\\''")}'`).join(' ');
+  run('rsync', ['-rcz', '--safe-links', '--link-dest=/opt/next/current', '-e', transport,
+    `${unpack}/dist/`, `${destination}:/opt/next/incoming/${release}/dist/`]);
+  run('ssh', ['-p', port, ...common, destination, `/usr/local/bin/next-activate ${release} --directory`]);
+} else {
+  run('scp', ['-P', port, ...common, archive, `${destination}:/opt/next/incoming/${release}.tar.gz`]);
+  run('ssh', ['-p', port, ...common, destination, `/usr/local/bin/next-activate ${release}`]);
+}
 // 外网证书和版本必须都正确；失败不误报发布成功。
 const response = await fetch(`https://${domain}/version.json?t=${Date.now()}`, { signal: AbortSignal.timeout(20000) });
 if (!response.ok || (await response.json()).release !== release) throw new Error('公网 HTTPS 版本校验失败，请检查 DNS 和证书');

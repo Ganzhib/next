@@ -79,4 +79,4 @@ jobs:
           DEPLOY_PORT: ${{ vars.DEPLOY_SSH_PORT || '22' }}
           DEPLOY_DOMAIN: ${{ vars.PRODUCTION_DOMAIN }}
           DEPLOY_IDENTITY_FILE: /home/runner/.ssh/next_deploy
-        run: node deploy/deploy.mjs --release "$GITHUB_SHA" --skip-build
+        run: node deploy/deploy.mjs --release "$GITHUB_SHA" --skip-build --sync
