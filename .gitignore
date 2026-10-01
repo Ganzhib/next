@@ -8,6 +8,7 @@ deploy/*.local.*
 deploy/.local-tools/
 *.pem
 *.key
+performance-results/
 test-results/
 playwright-report/
 *.tsbuildinfo

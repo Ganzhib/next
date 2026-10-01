@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "images:build": "node scripts/optimize-images.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
@@ -29,6 +30,7 @@
     "fake-indexeddb": "^6.0.0",
     "prettier": "^3.9.9",
     "sass": "^1.89.0",
+    "sharp": "^0.35.5",
     "typescript": "~5.8.3",
     "vite": "^6.3.0",
     "vitest": "^3.1.0"

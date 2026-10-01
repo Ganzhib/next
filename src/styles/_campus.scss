@@ -2,6 +2,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 50px;
   align-items: center;
+  > * { min-width: 0; }
   padding-top: 48px;
   padding-bottom: 48px;
   h1 {

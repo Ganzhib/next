@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useApp } from "../app/context";
 import { campusDirections } from "../domain/campus";
+import { Illustration, type IllustrationId } from "./illustration";
 
 export function CampusExplore() {
   const { products } = useApp();
@@ -22,12 +23,9 @@ export function CampusExplore() {
               key={direction.id}
             >
               <div className="campus-art">
-                <img
-                  src={direction.image}
+                <Illustration
+                  id={`campus-${direction.id}` as IllustrationId}
                   alt={direction.alt}
-                  width="1536"
-                  height="1024"
-                  loading="lazy"
                 />
                 <span className="campus-index">0{index + 1}</span>
               </div>

@@ -24,6 +24,7 @@ test("首页视觉、收藏持久化和移动端布局", async ({ page }) => {
           images.every(
             (image) =>
               (image as HTMLImageElement).complete &&
+              (image as HTMLImageElement).currentSrc.includes('/media/') &&
               (image as HTMLImageElement).naturalWidth > 0,
           ),
         ),
@@ -90,6 +91,7 @@ test("首页视觉、收藏持久化和移动端布局", async ({ page }) => {
           images.every(
             (image) =>
               (image as HTMLImageElement).complete &&
+              (image as HTMLImageElement).currentSrc.includes('/media/') &&
               (image as HTMLImageElement).naturalWidth > 0,
           ),
         ),

@@ -1,0 +1,322 @@
+{
+  "campus-projects": {
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 2855057,
+    "placeholder": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAAAwBACdASoYABAAPwFqrE8rJaQiMAgBYCAJaQAAVGPyFFK+H/Q1gSJ31QAA/ug6mZB1StufD3/ASPWZMTcNEcDYQpsVmCllj5d42dHEL0Gqr2fRK0mNW51ItWDIKA6Uf0NiHp6XZ+Re2j65u/zvDv2ckj07nRxrD4SnykYYxvVRxf767VGX6wxI2vMsJUhghjVnwNfXhT+mRaMccAA=",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/campus-projects-384-762a8f508aa0.avif",
+        "bytes": 11823
+      },
+      {
+        "width": 768,
+        "src": "/media/campus-projects-768-d1d575130d93.avif",
+        "bytes": 40585
+      },
+      {
+        "width": 1152,
+        "src": "/media/campus-projects-1152-2ad6143bcc95.avif",
+        "bytes": 81078
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/campus-projects-384-877834024d89.webp",
+        "bytes": 19392
+      },
+      {
+        "width": 768,
+        "src": "/media/campus-projects-768-8e53159f5f4b.webp",
+        "bytes": 66708
+      },
+      {
+        "width": 1152,
+        "src": "/media/campus-projects-1152-91ce8bc30178.webp",
+        "bytes": 134564
+      }
+    ]
+  },
+  "campus-research": {
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 2656791,
+    "placeholder": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAAAQBACdASoYABAAPwForE6rJiQiMAgBYCAJaQAD5VoJZ2pnky/zQCbpQAD+628MEXnAc9p9WmAPTL9EhaJxItEFif0kkP3Lx7h/vrppgl00NLNiuZkUJ+LNmdexhWl5tNSMvI7JumkSf1Qatm6mSpn7ISL43TPMCBDShblhfixHVjcRi81aHAAA",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/campus-research-384-fac49cfc623b.avif",
+        "bytes": 11079
+      },
+      {
+        "width": 768,
+        "src": "/media/campus-research-768-43f6eae4efef.avif",
+        "bytes": 34053
+      },
+      {
+        "width": 1152,
+        "src": "/media/campus-research-1152-ab47ca7b811f.avif",
+        "bytes": 65784
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/campus-research-384-edd410536607.webp",
+        "bytes": 18642
+      },
+      {
+        "width": 768,
+        "src": "/media/campus-research-768-f0b9147d8059.webp",
+        "bytes": 58236
+      },
+      {
+        "width": 1152,
+        "src": "/media/campus-research-1152-17027565e937.webp",
+        "bytes": 109102
+      }
+    ]
+  },
+  "campus-study": {
+    "width": 1536,
+    "height": 1024,
+    "originalBytes": 3305463,
+    "placeholder": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAAAQBACdASoYABAAPwForE6rJaQiMAgBYCAJaQDImBTAdaRkuOY0p4GGAAD3gYSTqSKYSEenpnGBvdlNBTOT46rXTRkxzfY4dAZbVvGOhFeaKmOosrCEbwwFPhqyXs3DPMAb7A9sbJeMte2xGMnFmpemtnx3BNHgmKAaBixP47/C0Ps5gwKAztf75JtWrGWmO3ymAA==",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/campus-study-384-bf65e5c52af7.avif",
+        "bytes": 12146
+      },
+      {
+        "width": 768,
+        "src": "/media/campus-study-768-5d5938b839e6.avif",
+        "bytes": 43426
+      },
+      {
+        "width": 1152,
+        "src": "/media/campus-study-1152-2e0e8044f8a2.avif",
+        "bytes": 91457
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/campus-study-384-28a8bb5808d9.webp",
+        "bytes": 21216
+      },
+      {
+        "width": 768,
+        "src": "/media/campus-study-768-77986d817032.webp",
+        "bytes": 78946
+      },
+      {
+        "width": 1152,
+        "src": "/media/campus-study-1152-cd6e066b322c.webp",
+        "bytes": 162526
+      }
+    ]
+  },
+  "career-mock": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 2700974,
+    "placeholder": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAAAwBQCdASoYABgAPwFqsVGrJaSisBgIAWAgCWkAA+SBCHuo9i4kE2tEUAQ/hOLqs0S4gAD+78MWzqZcEWpGsI13RFRtzVRuha1JVer4+41hEHvGP6Pl4BtlkLu8IpqG467AkFXxJMOl5XXcZ5DxY63/lwiZ5POPgH/6MMgFg0iLcWvuu7+SZRXWlliLeVhInv/yRqGT765wTOHAAAA=",
+    "avif": [
+      {
+        "width": 256,
+        "src": "/media/career-mock-256-533c01341e5c.avif",
+        "bytes": 5409
+      },
+      {
+        "width": 512,
+        "src": "/media/career-mock-512-509ee3bfc707.avif",
+        "bytes": 20240
+      },
+      {
+        "width": 768,
+        "src": "/media/career-mock-768-80a1d82966af.avif",
+        "bytes": 45967
+      }
+    ],
+    "webp": [
+      {
+        "width": 256,
+        "src": "/media/career-mock-256-35055a7fc3b4.webp",
+        "bytes": 7986
+      },
+      {
+        "width": 512,
+        "src": "/media/career-mock-512-164e76acc3e7.webp",
+        "bytes": 30736
+      },
+      {
+        "width": 768,
+        "src": "/media/career-mock-768-d4569a8e12c0.webp",
+        "bytes": 72222
+      }
+    ]
+  },
+  "career-offer": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 2487029,
+    "placeholder": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAAAQBQCdASoYABgAPwFyslGrJqSiqAqpYCAJaQAD5ekMdsWRRmP/v/MeeO2VahzghukAAP7vw0xwEk0IRID2NuBWWPedOlvSmCiMQJoMKSyJstb+yL5lYCkNZguhWPKMlPqdoixwnnwR7gldUIkLfVZJj/Qes1/TnVCMhXPHKZyNw5duQMZC1kIIM4H2Z6E0Cr5XacQtQLBMpQo/QICAAA==",
+    "avif": [
+      {
+        "width": 256,
+        "src": "/media/career-offer-256-f4cd1c4ec9c9.avif",
+        "bytes": 6356
+      },
+      {
+        "width": 512,
+        "src": "/media/career-offer-512-9378ca8a0125.avif",
+        "bytes": 20013
+      },
+      {
+        "width": 768,
+        "src": "/media/career-offer-768-9a44f58f66f3.avif",
+        "bytes": 42648
+      }
+    ],
+    "webp": [
+      {
+        "width": 256,
+        "src": "/media/career-offer-256-afc0413e2677.webp",
+        "bytes": 9848
+      },
+      {
+        "width": 512,
+        "src": "/media/career-offer-512-45664f4a6096.webp",
+        "bytes": 33382
+      },
+      {
+        "width": 768,
+        "src": "/media/career-offer-768-8f2cd8b55095.webp",
+        "bytes": 72232
+      }
+    ]
+  },
+  "career-practice": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 2734747,
+    "placeholder": "data:image/webp;base64,UklGRsQAAABXRUJQVlA4ILgAAABwBQCdASoYABgAPwFyrlCrJyQisBgIAWAgCWkAA+XRCHbHHvhX/s+xDlmbWaDQtW8ae/pAAP7vwX+rjshAwPHVazI+kFUm6OHwfPCAOkfNYo6vJapFgM7SJY+kpNbFXaUut9sX7iWJdJLRbJqJx567Owd2ATTGZMSfl7aFTJkN4TC9s31nYtH4ioF/D6F/YBu8PkJ3Fi2GPWp9w25hTkgWgu4uGCBtg99c5PTep4urK88De1eDgAAA",
+    "avif": [
+      {
+        "width": 256,
+        "src": "/media/career-practice-256-e80d900ed667.avif",
+        "bytes": 6098
+      },
+      {
+        "width": 512,
+        "src": "/media/career-practice-512-1d9f3b1adff6.avif",
+        "bytes": 21877
+      },
+      {
+        "width": 768,
+        "src": "/media/career-practice-768-3870b1242eff.avif",
+        "bytes": 48407
+      }
+    ],
+    "webp": [
+      {
+        "width": 256,
+        "src": "/media/career-practice-256-e2240f574057.webp",
+        "bytes": 10168
+      },
+      {
+        "width": 512,
+        "src": "/media/career-practice-512-09eacfa17bb6.webp",
+        "bytes": 37096
+      },
+      {
+        "width": 768,
+        "src": "/media/career-practice-768-ab6f89fdcba9.webp",
+        "bytes": 81596
+      }
+    ]
+  },
+  "career-prepare": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 2545619,
+    "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAADwBACdASoYABgAPwFyr1KrJqQiqAqpYCAJaQAD5aEL7LxA8+RG3AuvjFx7vFZmaQAA/u/S4vwijtgvM/lpeRQ/RhN4eLrfSwzozy+JRRMsqb5eC9ZPYUq9OBrbpr1R5M+vU4yNJjRnwTt6AXnMNmLJC6QGEYQVfe0WxxNP+Jc+e0esKgRW1hBr+/rdIAAA",
+    "avif": [
+      {
+        "width": 256,
+        "src": "/media/career-prepare-256-409ec217aa89.avif",
+        "bytes": 6204
+      },
+      {
+        "width": 512,
+        "src": "/media/career-prepare-512-4bbfa3bc5c8c.avif",
+        "bytes": 20359
+      },
+      {
+        "width": 768,
+        "src": "/media/career-prepare-768-ca505c5afffa.avif",
+        "bytes": 43294
+      }
+    ],
+    "webp": [
+      {
+        "width": 256,
+        "src": "/media/career-prepare-256-cf4ed5aa0c4c.webp",
+        "bytes": 9404
+      },
+      {
+        "width": 512,
+        "src": "/media/career-prepare-512-474d526691c9.webp",
+        "bytes": 32060
+      },
+      {
+        "width": 768,
+        "src": "/media/career-prepare-768-6f7bca341e71.webp",
+        "bytes": 69478
+      }
+    ]
+  },
+  "career-search": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 2519537,
+    "placeholder": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAABQBQCdASoYABgAPwF2s1OrJySiqAgBYCAJaQAD5CEMZBFh9+UcSV+EVBvGp0ghLfCk+WAA/u/DR2IsqJ53kSoZ5Sg6I9ILSyLCypuO6kZsq47kINZWrtDV0tbCNyoqtvrvt5zSVxQx4tAy3ThuFpYm6cjgigdaWnyHsWruidRtkugh5RKiZhbhO/tACpecyalfqi34gOXFL6zQVIkwHZHY+6nwAAAA",
+    "avif": [
+      {
+        "width": 256,
+        "src": "/media/career-search-256-4987974d036f.avif",
+        "bytes": 6187
+      },
+      {
+        "width": 512,
+        "src": "/media/career-search-512-60123000907b.avif",
+        "bytes": 18419
+      },
+      {
+        "width": 768,
+        "src": "/media/career-search-768-cde4e53179aa.avif",
+        "bytes": 37220
+      }
+    ],
+    "webp": [
+      {
+        "width": 256,
+        "src": "/media/career-search-256-2946747d8666.webp",
+        "bytes": 9154
+      },
+      {
+        "width": 512,
+        "src": "/media/career-search-512-ffef06996ec0.webp",
+        "bytes": 29486
+      },
+      {
+        "width": 768,
+        "src": "/media/career-search-768-0d7060717a1c.webp",
+        "bytes": 61066
+      }
+    ]
+  }
+}

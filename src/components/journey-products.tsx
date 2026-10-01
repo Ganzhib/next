@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useApp } from "../app/context";
 import { careerJourney } from "../domain/journey";
 import { SectionTitle } from "./ui";
+import { Illustration, type IllustrationId } from "./illustration";
 
 export function JourneyProducts() {
   const { products, placements, track } = useApp();
@@ -41,12 +42,11 @@ export function JourneyProducts() {
               tabIndex={-1}
             >
               <div className="journey-illustration">
-                <img
-                  src={`/images/career-${stage.id}.png`}
+                <Illustration
+                  id={`career-${stage.id}` as IllustrationId}
                   alt={stage.illustrationAlt}
-                  width="1024"
-                  height="1024"
-                  loading={index < 3 ? "eager" : "lazy"}
+                  eager={index < 2}
+                  priority={index === 0}
                 />
                 <span className="journey-frame-number">0{index + 1}</span>
               </div>

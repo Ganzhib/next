@@ -1,4 +1,11 @@
 // 漫画版视觉：暖纸色与低饱和绿，保留铅笔线条和真实状态的语义色。
+.responsive-illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
 body {
   ::selection {
     background: #dce7ce;
@@ -113,6 +120,8 @@ body {
     }
     .ribbon-label {
       font-size: 14px;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
     .step-num {
       font-size: 12px;
@@ -232,6 +241,42 @@ body {
   }
 }
 @media (max-width: 1050px) {
+  .home .stage-ribbon {
+    .container {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      padding-top: 12px;
+      padding-bottom: 14px;
+      overflow: visible;
+    }
+    .ribbon-label {
+      display: block;
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 2px;
+    }
+    a {
+      min-width: 0;
+      min-height: 42px;
+      padding: 8px;
+      gap: 7px;
+      justify-content: center;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: 13px;
+      &:hover {
+        background: var(--accent-soft);
+      }
+    }
+    .step-num {
+      font-size: 11px;
+      margin-right: 0;
+    }
+  }
   .home .container {
     padding-left: 30px;
     padding-right: 30px;
@@ -242,6 +287,19 @@ body {
   }
   .home .hero-note {
     padding: 23px;
+  }
+}
+@media (max-width: 800px) {
+  .home .stage-ribbon .container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .home .stage-ribbon .container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    a:last-child {
+      grid-column: 1 / -1;
+    }
   }
 }
 @media (max-width: 720px) {
