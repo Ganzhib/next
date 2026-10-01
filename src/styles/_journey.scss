@@ -1,0 +1,213 @@
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 22px;
+}
+.journey-card {
+  --paper: #e8eedf;
+  &:nth-child(2) {
+    --paper: #e5edf0;
+  }
+  &:nth-child(3) {
+    --paper: #f2e7d6;
+  }
+  &:nth-child(4) {
+    --paper: #e9e5ef;
+  }
+  &:nth-child(5) {
+    --paper: #eeeccf;
+  }
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: 12px;
+  scroll-margin-top: 110px;
+  &:target,
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 7px;
+  }
+  h3 {
+    font-size: 23px;
+    font-weight: 800;
+    text-align: center;
+    margin: 20px 0 23px;
+    letter-spacing: -0.5px;
+  }
+}
+.journey-illustration {
+  position: relative;
+  aspect-ratio: 1 / 1.08;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--paper);
+  isolation: isolate;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    // 原始插画不变，用纸色融合降低白底和铅笔线条的生硬反差。
+    mix-blend-mode: multiply;
+    opacity: 0.88;
+    transition: transform 0.35s ease;
+  }
+}
+.journey-card.has-product:hover .journey-illustration img {
+  transform: scale(1.035);
+}
+.journey-frame-number {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  border: 1px solid #8b9984;
+  background: #fffdf2e8;
+  color: #466653;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  transform: rotate(-8deg);
+}
+.journey-product {
+  border-top: 1px solid var(--line);
+  padding: 18px 5px 0;
+  flex: 1;
+  h4 {
+    font-size: 19px;
+    line-height: 1.45;
+    margin: 6px 0 8px;
+    font-weight: 750;
+  }
+  p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin: 0;
+  }
+}
+.journey-caption {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.journey-card-footer {
+  padding: 22px 5px 0;
+  .button {
+    font-size: 14px;
+    min-height: 42px;
+    padding: 9px 12px;
+    border-radius: 50px;
+  }
+}
+.journey-coming-soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px dashed var(--line);
+  background: var(--soft);
+  border-radius: 50px;
+  color: var(--muted);
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+.journey-footnote,
+.journey-more {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.journey-more:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+.journey-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  span:first-child {
+    color: var(--ink);
+  }
+}
+:root[data-theme="dark"] .journey-illustration {
+  background: var(--paper);
+  img {
+    opacity: 0.86;
+  }
+}
+@media (max-width: 1100px) {
+  .journey-grid {
+    gap: 16px;
+  }
+  .journey-card h3 {
+    font-size: 19px;
+  }
+  .journey-product h4 {
+    font-size: 17px;
+  }
+}
+@media (max-width: 900px) {
+  .journey-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px 20px;
+  }
+}
+@media (max-width: 600px) {
+  .journey-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 16px;
+  }
+  .journey-card h3 {
+    font-size: 20px;
+    margin: 16px 0;
+  }
+  .journey-card:last-child {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0 16px;
+    align-items: start;
+    .journey-illustration {
+      grid-row: span 3;
+    }
+    h3 {
+      text-align: left;
+      margin: 0 0 12px;
+    }
+    .journey-product {
+      padding: 10px 0 0;
+    }
+    .journey-card-footer {
+      padding: 18px 0 0;
+    }
+  }
+  .journey-product {
+    padding: 14px 0 0;
+  }
+  .journey-card-footer {
+    padding: 18px 0 0;
+  }
+  .journey-summary {
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .journey-illustration img {
+    transition: none;
+  }
+}

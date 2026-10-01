@@ -1,0 +1,33 @@
+$accent: #466653;
+$radius: 12px;
+$break-mobile: 720px;
+@mixin mobile {
+  @media (max-width: $break-mobile) {
+    @content;
+  }
+}
+:root {
+  --bg: #faf8f3;
+  --surface: #fffdf8;
+  --ink: #303b35;
+  --muted: #687169;
+  --line: #dce0d5;
+  --soft: #f0f1e9;
+  --accent: #466653;
+  --accent-soft: #e6eddf;
+  --green: #466653;
+  --shadow: 0 10px 32px #0000000a;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #202621;
+  --surface: #29302a;
+  --ink: #edece1;
+  --muted: #b5bdb1;
+  --line: #465045;
+  --soft: #343e34;
+  --accent: #b5cbb0;
+  --accent-soft: #364535;
+  --green: #b5cbb0;
+  color-scheme: dark;
+}

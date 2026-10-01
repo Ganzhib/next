@@ -1,0 +1,7 @@
+{
+  "host": "your-server-ip",
+  "user": "next-deploy",
+  "port": 22,
+  "identityFile": "C:/Users/your-name/.ssh/next-github-actions",
+  "domain": "next.example.com"
+}

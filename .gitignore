@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+deploy/deploy.config.json
+deploy/*.local.*
+deploy/.local-tools/
+*.pem
+*.key
+test-results/
+playwright-report/
+*.tsbuildinfo
+.sites-runtime/

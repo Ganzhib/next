@@ -1,0 +1,290 @@
+// 漫画版视觉：暖纸色与低饱和绿，保留铅笔线条和真实状态的语义色。
+body {
+  ::selection {
+    background: #dce7ce;
+    color: #303b35;
+  }
+  .brand-mark {
+    background: var(--accent);
+    color: var(--bg);
+    border-radius: 8px 12px 9px 11px;
+    transform: rotate(-4deg);
+    span {
+      background: var(--accent);
+    }
+  }
+  .site-header {
+    border-bottom-color: transparent;
+  }
+  .site-header nav {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .site-header nav a.active:after {
+    background: var(--ink);
+    width: 26px;
+    height: 3px;
+    left: calc(50% - 13px);
+    border-radius: 50%;
+    transform: rotate(-4deg);
+  }
+  .button {
+    border-radius: 50px;
+    font-weight: 600;
+    &:hover {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+      box-shadow: 3px 3px 0 var(--line);
+    }
+  }
+  .button.secondary:hover {
+    background: var(--soft);
+    color: var(--ink);
+  }
+  .button:not(.secondary):not(.danger) {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+    &:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+  }
+  .button.danger {
+    background: #a62f2f;
+    color: #fff;
+    border-color: #a62f2f;
+  }
+  .avatar {
+    background: var(--soft);
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .product-icon {
+    --accent: #303030 !important;
+    background: var(--soft);
+    color: var(--ink);
+  }
+  .live-dot {
+    background: var(--ink);
+  }
+  .collection-section {
+    background: var(--soft);
+  }
+  .collection-card,
+  .collection-card:is(.green, .lavender, .blue),
+  .collection-card.sage,
+  .collection-card.cream {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  .collection-card .collection-number {
+    color: var(--line);
+    font-style: italic;
+  }
+  .contribution-icon {
+    color: var(--ink);
+    border-color: var(--ink);
+    transform: rotate(-8deg);
+  }
+  .site-footer {
+    background: var(--surface);
+  }
+  .search-field {
+    border-radius: 50px;
+    box-shadow: none;
+  }
+}
+.home {
+  .container {
+    max-width: 1420px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  .stage-ribbon {
+    border: 0;
+    .container {
+      min-height: 54px;
+    }
+    a {
+      font-size: 14px;
+    }
+    .ribbon-label {
+      font-size: 14px;
+    }
+    .step-num {
+      font-size: 12px;
+    }
+  }
+  .featured-section {
+    padding-top: 24px;
+    padding-bottom: 36px;
+  }
+  .featured-section .section-title {
+    margin-bottom: 24px;
+    align-items: center;
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    .eyebrow {
+      display: none;
+    }
+  }
+  .hero {
+    padding-top: 48px;
+    padding-bottom: 36px;
+    grid-template-columns: minmax(0, 1fr) 350px;
+    gap: 35px 70px;
+  }
+  .hero-kicker {
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  .hero h1 {
+    font-size: clamp(46px, 4.6vw, 68px);
+    font-weight: 900;
+    letter-spacing: -3px;
+    line-height: 1.23;
+  }
+  .hero .headline-serif {
+    font-family: inherit;
+    font-weight: inherit;
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 10px;
+  }
+  .hero-description {
+    font-size: 16px;
+    margin-top: 25px;
+  }
+  .hero form {
+    margin-top: 25px;
+    max-width: 520px;
+    .search-field {
+      border-color: var(--ink);
+      height: 54px;
+      input {
+        font-size: 14px;
+      }
+    }
+  }
+  .popular-searches {
+    font-size: 13px;
+  }
+  .hero-note {
+    border: 1.5px solid var(--ink);
+    border-radius: 30px 30px 30px 4px;
+    padding: 30px;
+    min-height: 240px;
+    align-self: center;
+    transform: rotate(2deg);
+    background: var(--surface);
+    box-shadow: 6px 7px 0 var(--soft);
+  }
+  .hero-note .note-number {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .hero-note p {
+    font-size: 17px;
+    line-height: 1.9;
+  }
+  .hero-note small {
+    font-size: 13px;
+  }
+  .hero-note .note-stamp {
+    font-size: 12px;
+    letter-spacing: 1px;
+    bottom: -32px;
+    right: 8px;
+    transform: rotate(-2deg);
+    color: var(--muted);
+    opacity: 1;
+  }
+  .hero-bottom {
+    font-size: 13px;
+    padding-bottom: 0;
+  }
+  .categories-section {
+    padding-top: 50px;
+  }
+  .category-tile h3 {
+    font-size: 16px;
+  }
+  .category-tile span {
+    font-size: 13px;
+  }
+  .category-tile:hover {
+    background: var(--soft);
+  }
+  .eyebrow {
+    font-size: 12px;
+  }
+}
+@media (max-width: 1050px) {
+  .home .container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .home .hero {
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 35px;
+  }
+  .home .hero-note {
+    padding: 23px;
+  }
+}
+@media (max-width: 720px) {
+  .home .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .home .hero {
+    grid-template-columns: 1fr;
+    padding-top: 36px;
+  }
+  .home .hero h1 {
+    font-size: 44px;
+    letter-spacing: -2px;
+  }
+  .home .hero-note {
+    display: none;
+  }
+  .home .hero-description {
+    font-size: 15px;
+  }
+  .home .hero-bottom {
+    font-size: 12px;
+    gap: 10px;
+  }
+  .home .featured-section .section-title {
+    gap: 10px;
+    h2 {
+      font-size: 17px;
+    }
+    .text-link {
+      padding: 0;
+      font-size: 12px;
+    }
+  }
+  .home .stage-ribbon .container {
+    min-height: 55px;
+  }
+  .home .stage-ribbon a {
+    font-size: 13px;
+  }
+  .home .popular-searches {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+}
