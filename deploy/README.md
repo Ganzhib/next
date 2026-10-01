@@ -2,7 +2,7 @@
 
 ## 设计与边界
 
-沿用 magic-resume 的「构建 → SSH 上传 → 独立站点 → HTTPS → 健康检查」流程。
+沿用构建 → SSH 上传 → 独立站点 → HTTPS → 健康检查」流程。
 本站为 Vite 静态应用，使用现有 Nginx 直接提供静态文件，不需要 Node 常驻进程、Docker 或数据库。
 不停止共享 Nginx，不修改 magic-resume 的目录、域名和容器。
 
