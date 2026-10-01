@@ -10,7 +10,8 @@ DOMAIN="$(cat "$BASE/domain")"
 ARCHIVE="$BASE/incoming/$RELEASE.tar.gz"
 TARGET="$BASE/releases/$RELEASE"
 test -f "$ARCHIVE"
-PREVIOUS="$(readlink -f "$BASE/current" || true)"
+PREVIOUS=""
+if [[ -L "$BASE/current" ]]; then PREVIOUS="$(readlink -f "$BASE/current")"; fi
 
 if [[ ! -d "$TARGET" ]]; then
   STAGING="$(mktemp -d "$BASE/releases/.staging-XXXXXXXX")"

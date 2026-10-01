@@ -6,10 +6,14 @@ DOMAIN="${1:?请传入已解析到本服务器的完整域名}"
 [[ "$(cat /opt/next/domain)" == "$DOMAIN" ]] || exit 2
 SITE="/etc/nginx/sites-available/$DOMAIN"
 test -f "$SITE"
-command -v certbot >/dev/null
 # 用 webroot 验证，整个过程不停止共享 Nginx，不影响简历等站点。
 # 已有账户可直接沿用；首次申请时请先按证书服务商要求注册账户。
-certbot certonly --webroot -w /var/www/next-acme -d "$DOMAIN" --non-interactive --agree-tos
+if [[ "${2:-}" != "--existing-cert" ]]; then
+  command -v certbot >/dev/null
+  certbot certonly --webroot -w /var/www/next-acme -d "$DOMAIN" --non-interactive --agree-tos
+fi
+openssl x509 -in "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" -noout -checkhost "$DOMAIN"
+openssl x509 -in "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" -noout -checkend 86400
 BACKUP="$SITE.before-https-$(date +%s)"
 cp -a "$SITE" "$BACKUP"
 python3 - "$SITE" "$DOMAIN" <<'PY'
@@ -51,7 +55,9 @@ if ! nginx -t; then
 fi
 systemctl reload nginx
 # certbot 的部署钩子只做配置校验与平滑重载。
-install -d -m 755 /etc/letsencrypt/renewal-hooks/deploy
-printf '#!/bin/sh\nnginx -t && systemctl reload nginx\n' > /etc/letsencrypt/renewal-hooks/deploy/next-reload-nginx
-chmod 755 /etc/letsencrypt/renewal-hooks/deploy/next-reload-nginx
+if [[ "${2:-}" != "--existing-cert" ]]; then
+  install -d -m 755 /etc/letsencrypt/renewal-hooks/deploy
+  printf '#!/bin/sh\nnginx -t && systemctl reload nginx\n' > /etc/letsencrypt/renewal-hooks/deploy/next-reload-nginx
+  chmod 755 /etc/letsencrypt/renewal-hooks/deploy/next-reload-nginx
+fi
 curl --fail --silent --show-error --max-time 20 "https://$DOMAIN/version.json"

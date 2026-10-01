@@ -6,6 +6,14 @@
 本站为 Vite 静态应用，使用现有 Nginx 直接提供静态文件，不需要 Node 常驻进程、Docker 或数据库。
 不停止共享 Nginx，不修改 magic-resume 的目录、域名和容器。
 
+正式域名：`https://next.ganzhibin.icu`。日常代码发布只切换静态目录，不停止 Nginx。
+
+### 本服务器的证书验证限制
+
+2026-10-01 的 HTTP-01 验证请求被导向 DNSPod 拦截页面，因此首次安装经站点所有者明确批准，使用 TLS-ALPN 验证。`issue-tls-certificate.sh --maintenance-approved` 会短暂停止共享 Nginx，设置 105 秒超时、退出恢复以及 120 秒独立恢复保险；该脚本**不可放入普通 CI/CD，也没有配置自动停站续期**。
+
+证书安装后使用 `enable-https.sh next.ganzhibin.icu --existing-cert` 绑定域名。已有 acme.sh 定时任务不能在 Nginx 占用 443 时完成此证书的 ALPN 续期，不能将其视为可用的自动续期。到期前应接入 DNS API 自动验证，或另行批准维护窗口续期；普通代码部署不受影响。
+
 - 独立目录：`/opt/next`。
 - 独立账号：`next-deploy`，无 sudo 权限，专用 SSH 密钥禁止端口转发和 PTY。
 - 版本目录：`/opt/next/releases/<完整 Git SHA>/dist`。

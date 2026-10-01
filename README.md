@@ -2,6 +2,8 @@
 
 [![CI/CD](https://github.com/Ganzhib/next/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ganzhib/next/actions/workflows/deploy.yml)
 
+访问地址：[next.ganzhibin.icu](https://next.ganzhibin.icu)。证书验证与续期边界见部署文档。
+
 面向在校学生的独立产品发现与连接网站，覆盖校园学习、项目竞赛、科研升学与求职准备。当前正式接入方向为简历与 AI 面试，其他方向明确展示「敬请期待」。聚合平台管理介绍、分类、合集、推荐位和跳转，不在本站复制独立工具的业务功能。
 
 ## 本地启动
