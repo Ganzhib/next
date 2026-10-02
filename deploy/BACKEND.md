@@ -3,7 +3,7 @@
 ## 运行布局
 
 - 原有 NEXT 域名和 Nginx 静态站点保持不变，新增 `/api/` 反向代理。
-- 独立 Compose 项目 `next-backend`，独立 PostgreSQL 卷、网络、数据库密码。数据库无公网端口，API 只绑定宿主机 `127.0.0.1:3001`。
+- 独立 Compose 项目 `next-backend`，独立 PostgreSQL 卷、网络、数据库密码。数据库无公网端口，API 只绑定宿主机 `127.0.0.1:3101`（容器内 3001，避开简历站的宿主机 3001）。
 - API 使用非 root 用户、只读文件系统、移除 capabilities、不挂 Docker socket；内存 256 MB。数据库上限 512 MB。
 - `/opt/next-backend/.env` 和 Compose 配置由 root 管理，不随 CI 覆盖；密码不进仓库。
 - `/opt/next/releases/<SHA>/dist` 为前端；`backend` 为编译后的 API 和维护程序。Nginx 只服务 dist，不暴露后端文件。
@@ -57,7 +57,7 @@ API 由 Node.js 22 基础镜像运行构建产物，无须在服务器 npm insta
 # 交互输入账号和新密码，不回显；会撤销此账号所有会话
 docker compose --env-file /opt/next-backend/.env -f /opt/next-backend/compose.yml ps
 docker compose --env-file /opt/next-backend/.env -f /opt/next-backend/compose.yml logs --tail 100 api
-curl --fail http://127.0.0.1:3001/api/health
+curl --fail http://127.0.0.1:3101/api/health
 ```
 
 不要打印 `.env` 到日志、不要把数据库映射到公网、不要执行 `down -v`。配置只保存在服务器，重建数据库容器不会删除卷。

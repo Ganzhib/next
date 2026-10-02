@@ -28,5 +28,5 @@ restore() {
 trap restore EXIT
 "${COMPOSE[@]}" run --rm --no-deps api node cli.cjs migrate
 "${COMPOSE[@]}" up -d --force-recreate --wait --wait-timeout 90 api
-curl --fail --silent --max-time 10 http://127.0.0.1:3001/api/health >/dev/null
+curl --fail --silent --max-time 10 http://127.0.0.1:3101/api/health >/dev/null
 echo 'NEXT 后端健康检查通过'

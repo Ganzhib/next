@@ -5,7 +5,7 @@ DOMAIN="${1:?完整 NEXT 域名}"
 [[ "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]+$ ]] || exit 2
 CONFIG="/etc/nginx/sites-available/$DOMAIN"
 test -f "$CONFIG"
-curl --fail --silent http://127.0.0.1:3001/api/health >/dev/null
+curl --fail --silent http://127.0.0.1:3101/api/health >/dev/null
 SOURCE="$(cd "$(dirname "$0")" && pwd)"
 install -m 644 "$SOURCE/nginx-api.conf" /etc/nginx/snippets/next-api.conf
 BACKUP="$CONFIG.before-api-$(date +%s)"
