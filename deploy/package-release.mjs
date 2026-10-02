@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync, cpSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -10,7 +10,12 @@ export function packageRelease(release) {
   mkdirSync(resolve(root, 'deploy/dist'), { recursive: true });
   writeFileSync(resolve(root, 'dist/version.json'), JSON.stringify({ release }) + '\n');
   const archive = resolve(root, `deploy/dist/release-${release}.tar.gz`);
-  const result = spawnSync('tar', ['-czf', archive, 'dist'], { cwd: root, stdio: 'inherit' });
+  if (!existsSync(resolve(root, 'backend-dist/index.cjs'))) throw new Error('请先 npm run build:server');
+  const staging=resolve(root,`deploy/dist/package-${release}`);
+  mkdirSync(staging,{recursive:true});
+  cpSync(resolve(root,'dist'),resolve(staging,'dist'),{recursive:true});
+  cpSync(resolve(root,'backend-dist'),resolve(staging,'backend'),{recursive:true});
+  const result = spawnSync('tar', ['-czf', archive, 'dist', 'backend'], { cwd: staging, stdio: 'inherit' });
   if (result.status !== 0) throw new Error('发布包生成失败');
   return archive;
 }

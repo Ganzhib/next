@@ -38,6 +38,13 @@ import {
 import { Empty } from "./components/ui";
 import { HomepageEditor, NavigationEditor } from "./pages/admin-layout-editor";
 import "./styles/main.scss";
+import "./styles/_cms.scss";
+import {
+  AdminPages,
+  PromotionEditor,
+  HomeContentEditor,
+} from "./pages/admin-server";
+import { PromotionPage } from "./pages/promotion";
 function App() {
   const { loading, error } = useApp();
   if (error)
@@ -59,6 +66,7 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="p/:slug" element={<PromotionPage />} />
         <Route path="products" element={<Catalog />} />
         <Route path="products/:slug" element={<ProductDetail />} />
         <Route path="search" element={<Catalog />} />
@@ -113,6 +121,10 @@ function App() {
         <Route path="collections" element={<AdminCollections />} />
         <Route path="placements" element={<AdminPlacements />} />
         <Route path="homepage" element={<HomepageEditor />} />
+        <Route path="content" element={<HomeContentEditor />} />
+        <Route path="pages" element={<AdminPages />} />
+        <Route path="pages/new" element={<PromotionEditor />} />
+        <Route path="pages/:id" element={<PromotionEditor />} />
         <Route path="navigation" element={<NavigationEditor />} />
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="funnels" element={<AdminAnalytics />} />

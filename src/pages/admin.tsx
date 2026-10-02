@@ -50,6 +50,8 @@ import { Empty, Modal, ProductIcon } from "../components/ui";
 import { hashPin, safeTarget } from "../domain/security";
 import { emptyProduct, now, uid } from "../domain/seed";
 import { repository } from "../storage";
+import { api, serverMode, loadSession } from "../storage/http";
+import { ServerAccounts } from "./admin-server";
 import {
   productSchema,
   pricingLabels,
@@ -73,6 +75,8 @@ const navGroups: { label: string; links: [string, string, LucideIcon][] }[] = [
       ["collections", "精选合集", FolderOpen],
       ["placements", "推荐与编排", GripVertical],
       ["homepage", "首页编排", LayoutDashboard],
+      ["content", "首页图文", Pencil],
+      ["pages", "宣传页面", BookOpen],
       ["navigation", "导航管理", Compass],
       ["categories", "分类与标签", ListChecks],
     ],
@@ -98,7 +102,8 @@ const navGroups: { label: string; links: [string, string, LucideIcon][] }[] = [
   },
 ];
 export function AdminLayout() {
-  const { admin, setAdmin, settings, save, toast } = useApp();
+  const { admin, setAdmin, settings, save, toast, refresh } = useApp();
+  const [username, setUsername] = useState("");
   const [pin, setPin] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
@@ -109,6 +114,15 @@ export function AdminLayout() {
     e.preventDefault();
     setBusy(true);
     try {
+      if (serverMode) {
+        await api("/auth/login", "POST", { username, password: pin });
+        await loadSession();
+        await refresh();
+        setAdmin(true);
+        setPin("");
+        toast("已安全登录运营后台");
+        return;
+      }
       if (pin.length < 6) throw new Error("请输入至少 6 位本地访问口令");
       if (settings.adminPinHash) {
         if ((await hashPin(pin, settings.adminSalt)) !== settings.adminPinHash)
@@ -142,11 +156,30 @@ export function AdminLayout() {
             <LockKeyhole size={28} />
           </span>
           <span className="eyebrow">NEXT / OPERATOR WORKSPACE</span>
-          <h1>{settings.adminPinHash ? "欢迎回来。" : "建立你的运营空间。"}</h1>
+          <h1>
+            {serverMode || settings.adminPinHash
+              ? "欢迎回来。"
+              : "建立你的运营空间。"}
+          </h1>
           <p>在这里整理产品、编排首页，了解真实的访问行为。</p>
           <form className="form" onSubmit={(e) => void unlock(e)}>
+            {serverMode && (
+              <label>
+                管理员账号
+                <input
+                  required
+                  autoComplete="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </label>
+            )}
             <label>
-              {settings.adminPinHash ? "本地访问口令" : "设置本地访问口令"}
+              {serverMode
+                ? "登录密码"
+                : settings.adminPinHash
+                  ? "本地访问口令"
+                  : "设置本地访问口令"}
               <input
                 type="password"
                 minLength={6}
@@ -155,7 +188,9 @@ export function AdminLayout() {
                 onChange={(e) => setPin(e.target.value)}
                 placeholder="至少 6 位字符"
                 autoComplete={
-                  settings.adminPinHash ? "current-password" : "new-password"
+                  serverMode || settings.adminPinHash
+                    ? "current-password"
+                    : "new-password"
                 }
               />
             </label>
@@ -167,14 +202,16 @@ export function AdminLayout() {
             <button className="button full" disabled={busy}>
               {busy
                 ? "正在打开…"
-                : settings.adminPinHash
+                : serverMode || settings.adminPinHash
                   ? "进入运营后台"
                   : "创建并进入"}
             </button>
           </form>
           <p className="gate-note">
             <Shield size={14} />{" "}
-            此口令只限制本地界面访问，不是服务端鉴权。所有运营数据保存在当前浏览器。
+            {serverMode
+              ? "仅限授权管理员。登录状态有效期 8 小时，权限由服务端校验。"
+              : "此口令只限制本地界面访问，不是服务端鉴权。所有运营数据保存在当前浏览器。"}
           </p>
         </div>
         <Link to="/" className="text-link">
@@ -203,8 +240,11 @@ export function AdminLayout() {
           </div>
         ))}
         <div className="sidebar-bottom">
-          <span className="local-indicator" /> 浏览器本地存储{" "}
-          <small>IndexedDB · 当前设备</small>
+          <span className="local-indicator" />{" "}
+          {serverMode ? "服务端数据已连接" : "浏览器本地存储"}
+          <small>
+            {serverMode ? "PostgreSQL · 多设备同步" : "IndexedDB · 当前设备"}
+          </small>
         </div>
       </aside>
       <div className="admin-main">
@@ -231,7 +271,15 @@ export function AdminLayout() {
             </Link>
             <button
               className="icon-button"
-              onClick={() => setAdmin(false)}
+              onClick={() => {
+                if (serverMode)
+                  void api("/auth/logout", "POST")
+                    .then(loadSession)
+                    .then(refresh)
+                    .then(() => setAdmin(false))
+                    .catch((e) => toast(e.message));
+                else setAdmin(false);
+              }}
               aria-label="锁定后台"
             >
               <LogOut size={17} />
@@ -316,7 +364,10 @@ export function AdminOverview() {
       <div className="local-banner">
         <span>
           <ActivityIcon size={17} />
-          <strong>本地数据模式</strong> 当前统计仅包含本浏览器记录。
+          <strong>{serverMode ? "服务器数据" : "本地数据模式"}</strong>{" "}
+          {serverMode
+            ? "统计仅包含同意上报的访客，最多展示最近 20000 条事件。"
+            : "当前统计仅包含本浏览器记录。"}
         </span>
         <Link to="/settings/privacy">
           {profile.analytics ? "行为记录已开启" : "开启行为记录"}
@@ -1158,7 +1209,9 @@ export function ProductEditor() {
                       onChange={(e) => set("scheduledAt", e.target.value)}
                     />
                     <small>
-                      本地模式仅在页面打开时检查计划时间，后台定时任务待接入。
+                      {serverMode
+                        ? "服务器每分钟检查计划时间，到期自动发布，无需保持浏览器打开。"
+                        : "本地模式仅在页面打开时检查计划时间。"}
                     </small>
                   </label>
                 )}
@@ -1701,7 +1754,11 @@ export function AdminAnalytics() {
       <AdminTitle
         eyebrow="ANALYTICS / 数据分析"
         title="看见真实的使用，做出更好的选择。"
-        description="所有指标来自本浏览器事件；没有数据时显示空状态，不生成模拟趋势。"
+        description={
+          serverMode
+            ? "来自同意上报的匿名访客。保留 90 天，当前报表最多分析最近 20000 条事件；并非全量访客或第三方转化统计。"
+            : "所有指标来自本浏览器事件；没有数据时显示空状态，不生成模拟趋势。"
+        }
       >
         <select
           className="standalone-select"
@@ -1724,7 +1781,9 @@ export function AdminAnalytics() {
       <div className="local-banner">
         <span>
           <Shield size={17} />
-          本地分析{profile.analytics ? "已开启" : "未开启"} · 非全站统计 ·
+          {serverMode
+            ? "匿名访客统计 · 仅同意样本 ·"
+            : `本地分析${profile.analytics ? "已开启" : "未开启"} · 非全站统计 ·`}
           不推测第三方使用情况
         </span>
         <Link to="/settings/privacy">管理同意设置</Link>
@@ -1902,7 +1961,11 @@ export function AdminSubmissions() {
       <AdminTitle
         eyebrow="INBOX / 提交与反馈"
         title="每条建议，都值得听见。"
-        description="产品推荐、用户反馈与认领申请。当前收件箱仅包含本浏览器提交。"
+        description={
+          serverMode
+            ? "产品推荐、用户反馈与认领申请，由服务器统一收集和保存。"
+            : "产品推荐、用户反馈与认领申请。当前收件箱仅包含本浏览器提交。"
+        }
       />
       <div className="admin-tabs">
         {[
@@ -1983,7 +2046,11 @@ export function AdminAudit() {
       <AdminTitle
         eyebrow="AUDIT LOG / 操作记录"
         title="每一次调整，都有迹可循。"
-        description="本地记录关键管理操作。接入后端后需替换为不可由客户端篡改的审计日志。"
+        description={
+          serverMode
+            ? "关键写入与审计记录在同一数据库事务内完成；客户端不能新增、修改或删除审计日志。"
+            : "本地记录关键管理操作。"
+        }
       />
       <div className="table-scroll">
         <table className="data-table">
@@ -2082,7 +2149,11 @@ export function AdminSiteSettings() {
       <AdminTitle
         eyebrow="SITE SETTINGS / 站点设置"
         title="把下一程，做成你的样子。"
-        description="品牌设置、演示数据、备份与迁移。所有数据当前保存在本浏览器。"
+        description={
+          serverMode
+            ? "站点配置在服务器保存。超级管理员可导出、合并导入内容备份。完整数据库恢复请使用服务器维护脚本。"
+            : "品牌设置、演示数据、备份与迁移。所有数据当前保存在本浏览器。"
+        }
       />
       <div className="settings-card form">
         <form
@@ -2134,7 +2205,9 @@ export function AdminSiteSettings() {
           <div>
             <h3>导出完整数据</h3>
             <p>
-              包含产品、分类、收藏、分析事件和本地访问口令摘要。请保管备份。
+              {serverMode
+                ? "导出站点内容与宣传页，不含账号密码、会话、访客分析或本机收藏。完整数据库请用服务器备份脚本。"
+                : "包含产品、分类、收藏、分析事件和本地访问口令摘要。请保管备份。"}
             </p>
           </div>
           <button
@@ -2152,7 +2225,11 @@ export function AdminSiteSettings() {
         <div className="setting-row">
           <div>
             <h3>从备份恢复</h3>
-            <p>恢复将覆盖当前浏览器全部站点数据。会先验证格式，再二次确认。</p>
+            <p>
+              {serverMode
+                ? "合并导入：同 ID 内容会更新，不删除其他记录。不导入旧口令、个人资料、会话和审计。"
+                : "恢复将覆盖当前浏览器全部站点数据。会先验证格式，再二次确认。"}
+            </p>
           </div>
           <label className="button secondary">
             <Upload size={16} />
@@ -2180,7 +2257,9 @@ export function AdminSiteSettings() {
         <div className="callout">
           <Shield size={21} />
           <p>
-            更换浏览器、设备或网站端口会使用不同的本地数据库。清除浏览器站点数据会删除全部记录。迁移接口与中文说明位于项目的
+            {serverMode
+              ? "站点内容由服务器统一保存。清除浏览器数据只影响本机收藏和偏好，不删除服务器内容。迁移接口与中文说明位于项目的 "
+              : "更换浏览器、设备或网站端口会使用不同的本地数据库。迁移接口与中文说明位于项目的 "}
             src/storage/README.md。
           </p>
         </div>
@@ -2189,7 +2268,11 @@ export function AdminSiteSettings() {
         open={backup !== null}
         onClose={() => setBackup(null)}
         title="用备份覆盖当前数据？"
-        description="当前本地资料、产品和事件将被替换。请确保已经导出当前数据。"
+        description={
+          serverMode
+            ? "同 ID 的服务器内容将被更新。请先导出备份；管理员、会话、个人资料和日志不受影响。"
+            : "当前本地资料、产品和事件将被替换。请确保已经导出当前数据。"
+        }
       >
         <div className="modal-actions">
           <button className="button secondary" onClick={() => setBackup(null)}>
@@ -2221,6 +2304,9 @@ export function AdminSiteSettings() {
   );
 }
 export function AdminUsers() {
+  return serverMode ? <ServerAccounts /> : <LocalUsers />;
+}
+function LocalUsers() {
   const { profile } = useApp();
   return (
     <>

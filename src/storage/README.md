@@ -2,7 +2,9 @@
 
 ## 当前实现
 
-本项目按用户要求，使用浏览器 **IndexedDB** 作为临时数据存储，不使用 localStorage 代替业务数据库。入口为 `src/storage/index.ts`，页面只通过 `Repository` 异步接口读写，不直接调用 IndexedDB。
+2026-10-02 已实现服务端适配器 `http.ts`，默认通过同源 `/api` 访问 PostgreSQL；个人资料、收藏与访问历史仍保留 IndexedDB。只有明确设置 `VITE_STORAGE_MODE=local` 时才使用旧的纯浏览器模式。入口为 `src/storage/index.ts`，页面仍通过 `Repository` 异步接口读写。
+
+服务端模式不会运行浏览器种子初始化或定时发布；初始化、权限校验、审计和定时发布均由后端负责。管理员 Cookie 是 HttpOnly，不把登录令牌写入本地存储。旧 IndexedDB 原样保留，可导出后由超级管理员确认合并迁移。完整行为与备份边界见 `server/README.md`。以下为保留的本地模式结构及历史迁移设计，不代表线上权限或存储实现。
 
 - 接口：`repository.ts`。
 - 浏览器适配器：`indexed-db.ts`。

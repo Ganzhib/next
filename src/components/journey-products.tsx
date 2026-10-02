@@ -5,7 +5,7 @@ import { SectionTitle } from "./ui";
 import { Illustration, type IllustrationId } from "./illustration";
 
 export function JourneyProducts() {
-  const { products, placements, track } = useApp();
+  const { products, placements, track, settings } = useApp();
   const primary = placements.find((p) => p.id === "home-primary" && p.enabled);
   // 推荐位只调整同阶段内的优先顺序，不打乱求职路线；演示数据不替代真实占位。
   const ranked = [...products]
@@ -26,13 +26,16 @@ export function JourneyProducts() {
     <>
       <SectionTitle
         eyebrow="YOUR CAREER JOURNEY / 一路向前"
-        title="求职的每一步，都在这里。"
+        title={settings.homeContent?.journeyTitle ?? "求职的每一步，都在这里。"}
         to="/products"
         label="探索产品库"
       />
       <div className="journey-grid">
         {groups.map((stage, index) => {
           const product = stage.products[0];
+          const custom = settings.homeContent?.cards.find(
+            (c) => c.id === `career-${stage.id}`,
+          );
           return (
             <article
               key={stage.id}
@@ -42,15 +45,25 @@ export function JourneyProducts() {
               tabIndex={-1}
             >
               <div className="journey-illustration">
-                <Illustration
-                  id={`career-${stage.id}` as IllustrationId}
-                  alt={stage.illustrationAlt}
-                  eager={index < 2}
-                  priority={index === 0}
-                />
+                {custom?.image ? (
+                  <img
+                    src={custom.image}
+                    alt={custom.alt}
+                    loading={index < 2 ? "eager" : "lazy"}
+                  />
+                ) : (
+                  <Illustration
+                    id={`career-${stage.id}` as IllustrationId}
+                    alt={stage.illustrationAlt}
+                    eager={index < 2}
+                    priority={index === 0}
+                  />
+                )}
                 <span className="journey-frame-number">0{index + 1}</span>
               </div>
-              <h3 id={`journey-title-${stage.id}`}>{stage.name}</h3>
+              <h3 id={`journey-title-${stage.id}`}>
+                {custom?.title ?? stage.name}
+              </h3>
               <div className="journey-product">
                 {product ? (
                   <>
@@ -62,7 +75,7 @@ export function JourneyProducts() {
                   <>
                     <span className="journey-caption">COMING SOON</span>
                     <h4>{stage.upcoming}</h4>
-                    <p>{stage.note}</p>
+                    <p>{custom?.description ?? stage.note}</p>
                   </>
                 )}
               </div>

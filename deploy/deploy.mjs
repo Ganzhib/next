@@ -28,6 +28,8 @@ if (!process.argv.includes('--skip-build')) {
   if (status.status !== 0 || status.stdout.trim()) throw new Error('请先提交代码，再执行正式发布');
   if (process.platform === 'win32') run('cmd.exe', ['/d', '/s', '/c', 'npm run build']);
   else run('npm', ['run', 'build']);
+  if (process.platform === 'win32') run('cmd.exe', ['/d', '/s', '/c', 'npm run build:server']);
+  else run('npm', ['run', 'build:server']);
   packageRelease(release);
 }
 const archive = resolve(root, `deploy/dist/release-${release}.tar.gz`);
@@ -45,6 +47,8 @@ if (process.argv.includes('--sync')) {
   const transport = ['ssh', '-p', port, ...common].map(value => `'${value.replaceAll("'", "'\\''")}'`).join(' ');
   run('rsync', ['-rcz', '--safe-links', '--link-dest=/opt/next/current', '-e', transport,
     `${unpack}/dist/`, `${destination}:/opt/next/incoming/${release}/dist/`]);
+  run('rsync', ['-rcz', '--safe-links', '-e', transport,
+    `${unpack}/backend/`, `${destination}:/opt/next/incoming/${release}/backend/`]);
   run('ssh', ['-p', port, ...common, destination, `/usr/local/bin/next-activate ${release} --directory`]);
 } else {
   run('scp', ['-P', port, ...common, archive, `${destination}:/opt/next/incoming/${release}.tar.gz`]);
@@ -53,4 +57,6 @@ if (process.argv.includes('--sync')) {
 // 外网证书和版本必须都正确；失败不误报发布成功。
 const response = await fetch(`https://${domain}/version.json?t=${Date.now()}`, { signal: AbortSignal.timeout(20000) });
 if (!response.ok || (await response.json()).release !== release) throw new Error('公网 HTTPS 版本校验失败，请检查 DNS 和证书');
+const health=await fetch(`https://${domain}/api/health`,{signal:AbortSignal.timeout(20000)});
+if(!health.ok || !(await health.json()).ok) throw new Error('公网 API 健康检查失败');
 console.log('发布完成，HTTPS 和线上版本校验通过。');

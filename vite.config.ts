@@ -27,7 +27,11 @@ export default defineConfig({
       },
     },
   ],
-  server: { port: 5173, strictPort: true },
+  server: {
+    port: 5173,
+    strictPort: true,
+    proxy: { "/api": process.env.API_TARGET || "http://127.0.0.1:3001" },
+  },
   build: {
     rollupOptions: {
       output: {

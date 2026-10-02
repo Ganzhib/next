@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { repository } from "../storage";
+import { serverMode, loadSession, HttpRepository } from "../storage/http";
 import type { Operation } from "../storage/repository";
 import {
   seed,
@@ -54,6 +55,18 @@ interface AppState {
   setAdmin: (v: boolean) => void;
 }
 const Context = createContext<AppState | null>(null);
+function anonymousActor() {
+  try {
+    const key = "next-anonymous-actor";
+    const existing = localStorage.getItem(key);
+    if (existing) return existing;
+    const id = uid();
+    localStorage.setItem(key, id);
+    return id;
+  } catch {
+    return "anonymous";
+  }
+}
 export function AppProvider({ children }: { children: ReactNode }) {
   const [allProducts, setProducts] = useState<Product[]>([]),
     [taxonomies, setTaxonomies] = useState<Taxonomy[]>([]),
@@ -78,6 +91,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [message]);
   const refresh = useCallback(async () => {
+    if (repository instanceof HttpRepository) repository.invalidate();
     const [p, t, c, pl, pr, s] = await Promise.all([
       repository.list("products"),
       repository.list("taxonomies"),
@@ -90,17 +104,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setTaxonomies(t.sort((a, b) => a.order - b.order));
     setCollections(c.sort((a, b) => a.order - b.order));
     setPlacements(pl.sort((a, b) => a.order - b.order));
-    setProfile(pr ?? defaultProfile());
-    profileRef.current = pr ?? defaultProfile();
+    const personal = pr ?? defaultProfile();
+    if (
+      serverMode &&
+      localStorage.getItem("next-server-analytics-consent") !== "yes"
+    )
+      personal.analytics = false;
+    setProfile(personal);
+    profileRef.current = personal;
     setSettings(s ?? defaultSettings);
   }, []);
   useEffect(() => {
-    seed(repository)
+    (serverMode
+      ? loadSession().then((session) => {
+          setAdmin(Boolean(session));
+        })
+      : seed(repository)
+    )
       .then(refresh)
       .catch((e) =>
         setError(e instanceof Error ? e.message : "浏览器存储暂时不可用"),
       )
       .finally(() => setLoading(false));
+  }, [refresh]);
+  useEffect(() => {
+    const expire = () => {
+      setAdmin(false);
+      void refresh().catch(() => {});
+    };
+    window.addEventListener("next-session-expired", expire);
+    return () => window.removeEventListener("next-session-expired", expire);
   }, [refresh]);
   useEffect(() => {
     if (typeof BroadcastChannel === "undefined") return;
@@ -115,7 +148,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   }, [refresh, toast]);
   useEffect(() => {
-    if (loading) return;
+    if (loading || serverMode) return;
     let running = false;
     const publishDue = async () => {
       if (running) return;
@@ -165,7 +198,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           id: uid(),
           name,
           sessionId,
-          actorId: "local",
+          actorId: serverMode ? anonymousActor() : "local",
           path: location.pathname,
           occurredAt: now(),
         });
@@ -216,6 +249,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     channel.current?.postMessage("changed");
   }
   async function updateProfile(patch: Partial<Profile>) {
+    if (serverMode && patch.analytics !== undefined)
+      localStorage.setItem(
+        "next-server-analytics-consent",
+        patch.analytics ? "yes" : "no",
+      );
     const previous = profileRef.current;
     const next = { ...previous, ...patch };
     profileRef.current = next;

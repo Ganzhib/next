@@ -131,6 +131,7 @@ export interface NavigationItem {
   order: number;
 }
 export interface SiteSettings {
+  homeContent?: import('./content').HomeContent;
   id: string;
   brand: string;
   tagline: string;

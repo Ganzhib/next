@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { productSchema, stores } from "../domain/models";
+import { homeContentSchema } from "../domain/content";
 const id = z.string().min(1);
 const strings = z.array(z.string());
 const profile = z.object({
@@ -90,6 +91,7 @@ export const backupSchema = z
       ),
       settings: z.array(
         z.object({
+          homeContent: homeContentSchema.optional(),
           id,
           brand: z.string(),
           tagline: z.string(),

@@ -8,12 +8,20 @@
 
 ## 本地启动
 
+已接入真实服务端后台：管理员与权限、首页图文配置、宣传页 CRUD / 草稿 / 发布、产品和运营数据存 PostgreSQL。完整说明见 [后端使用文档](server/README.md) 与 [后端部署维护](deploy/BACKEND.md)。下文 IndexedDB 说明保留用于离线演示模式；默认已使用服务端，不再是本地口令鉴权。
+
 服务器部署、HTTPS、独立发布账号与 GitHub Actions 配置见 [部署文档](deploy/README.md)。
 
 需要 Node.js 20.19+ 或 22.12+。
 
 ```sh
-npm install
+npm ci
+npm run setup:dev
+npm run db:migrate
+npm run admin:create
+# 一个终端启动 API
+npm run dev:api
+# 另一个终端启动前端
 npm run dev
 ```
 

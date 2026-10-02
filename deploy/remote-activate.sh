@@ -26,7 +26,7 @@ import pathlib, sys, tarfile
 with tarfile.open(sys.argv[1], 'r:gz') as bundle:
     for item in bundle.getmembers():
         path = pathlib.PurePosixPath(item.name)
-        if path.is_absolute() or '..' in path.parts or not path.parts or path.parts[0] != 'dist' or not (item.isfile() or item.isdir()):
+        if path.is_absolute() or '..' in path.parts or not path.parts or path.parts[0] not in ('dist', 'backend') or not (item.isfile() or item.isdir()):
             raise SystemExit('拒绝不安全的发布包条目')
     bundle.extractall(sys.argv[2])
 PY
@@ -37,6 +37,14 @@ PY
   mv "$STAGING" "$TARGET"
 fi
 grep -q "$RELEASE" "$TARGET/dist/version.json"
+if [[ -d "$TARGET/backend" ]]; then
+  test -x /usr/local/bin/next-backend-activate
+  sudo /usr/local/bin/next-backend-activate "$RELEASE"
+fi
+if [[ "${2:-}" == '--prepare-backend' ]]; then
+  echo '后端已准备，前端仍保持原版本；请初始化管理员并启用 API 代理'
+  exit 0
+fi
 ln -s "$TARGET/dist" "$BASE/.current-$RELEASE"
 mv -Tf "$BASE/.current-$RELEASE" "$BASE/current"
 

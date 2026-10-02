@@ -26,6 +26,7 @@ import {
 } from "../components/ui";
 import { now, uid } from "../domain/seed";
 import { repository } from "../storage";
+import { serverMode } from "../storage/http";
 import { safeTarget } from "../domain/security";
 import type { Notice } from "../domain/models";
 export function downloadJson(name: string, value: unknown) {
@@ -188,7 +189,7 @@ export function Settings() {
       <PageIntro
         eyebrow="PREFERENCES / 设置"
         title="让这个空间，更适合你。"
-        description="数据由你掌控。当前使用浏览器本地存储，不会自动上传。"
+        description="收藏与个人偏好保存在本机；网站内容、管理员和反馈由服务器保存。行为统计需单独同意。"
       />
       <div className="settings-layout">
         <nav className="settings-nav">
@@ -228,8 +229,9 @@ export function Settings() {
                 <div>
                   <h3>本地行为分析</h3>
                   <p>
-                    同意后，将页面、曝光和跳转事件记录到本浏览器的
-                    IndexedDB。不会上传至分析平台。
+                    {serverMode
+                      ? "默认关闭。开启后，将页面访问、产品曝光、搜索词和外链点击发送到 NEXT 服务器，使用随机匿名标识，保留 90 天。请勿在搜索词中输入个人敏感信息。"
+                      : "同意后，将页面、曝光和跳转事件记录到本浏览器的 IndexedDB。不会上传至分析平台。"}
                   </p>
                 </div>
                 <input
@@ -439,7 +441,7 @@ export function SubmissionPage() {
         "提交申请",
       );
       setDone(true);
-      toast("已保存至本地待审核列表");
+      toast(serverMode ? "已提交至服务器待审核列表" : "已保存至本地待审核列表");
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -457,12 +459,20 @@ export function SubmissionPage() {
               ? "让下一程，变得更好。"
               : "好产品，值得分享。"
         }
-        description="每一条建议都会成为改善的起点。当前提交仅保存在此浏览器，可在运营后台查看。"
+        description={
+          serverMode
+            ? "每一条建议都会成为改善的起点。提交内容会保存到 NEXT 服务器，由运营人员处理。请勿填写密码、简历等敏感内容。"
+            : "每一条建议都会成为改善的起点。当前提交仅保存在此浏览器，可在运营后台查看。"
+        }
       />
       {done ? (
         <Empty
           title="已保存，谢谢你的认真推荐"
-          description="你的提交已进入本地审核列表。后续接入服务器后，可将提交流程迁移为线上服务。"
+          description={
+            serverMode
+              ? "你的提交已进入运营审核列表，感谢一起完善下一程。"
+              : "你的提交已进入本地审核列表。"
+          }
         >
           <Link to="/products" className="button">
             继续发现产品
@@ -594,15 +604,16 @@ export function InfoPage() {
       <div className="prose">
         {privacy ? (
           <>
-            <h2>数据保存在你的浏览器</h2>
+            <h2>本机数据与服务器数据</h2>
             <p>
-              产品库、收藏、偏好、反馈及你允许记录的行为事件保存在当前网站来源的
-              IndexedDB
-              中。清除浏览器站点数据会删除这些记录，不同浏览器、设备与端口之间不会自动同步。
+              收藏、个人偏好和访问历史保存在当前浏览器，不会自动上传。产品库、公开页面及你主动提交的反馈存储在
+              NEXT 服务器。清除本地数据不会删除已提交的反馈或服务器记录。
             </p>
             <h2>行为记录由你选择</h2>
             <p>
-              行为分析默认关闭。你可以在隐私设置中开启本地统计，也可随时关闭或删除。记录不包含简历、面试内容、电话或邮箱。
+              行为分析默认关闭。服务端模式下，单独同意后才发送页面访问、曝光、搜索词和外链点击，并用随机标识统计匿名访客，最多保留
+              90
+              天。你可随时关闭，关闭后停止新增上报。不要在搜索框输入敏感信息。统计不追踪第三方产品内部行为，也不收集你的简历和面试内容。
             </p>
             <h2>外部服务</h2>
             <p>
@@ -619,9 +630,9 @@ export function InfoPage() {
             <p>
               下一程提供产品介绍、整理和访问入口。独立产品的功能、收费与账户由其运营者负责，使用前请阅读对应说明。
             </p>
-            <h2>本地开发版本</h2>
+            <h2>运营与统计边界</h2>
             <p>
-              当前的运营入口锁仅用于本设备交互隔离，不能替代服务端身份认证。这里的统计仅描述本浏览器记录，不能代表全站用户。
+              线上运营入口使用服务端登录及权限校验。分析仅覆盖主动同意统计的访问者；随机访客标识不等于实名用户，清除浏览器数据可能产生新标识。产品跳转不代表第三方产品内部使用或付费转化。
             </p>
             <h2>信息与演示数据</h2>
             <p>

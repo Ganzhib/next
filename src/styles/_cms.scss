@@ -1,0 +1,161 @@
+.cms-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  h3 {
+    margin-right: auto;
+  }
+}
+.cms-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  > * {
+    min-width: 0;
+  }
+}
+.cms-image-field {
+  display: grid;
+  gap: 12px;
+  img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    background: var(--bg);
+    border-radius: 12px;
+  }
+  small {
+    color: var(--muted);
+  }
+}
+.cms-save-bar {
+  position: sticky;
+  bottom: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 18px;
+  margin: 24px 0;
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border, #dce0d6);
+  border-radius: 16px;
+  box-shadow: 0 8px 30px #24362912;
+  z-index: 2;
+}
+.cms-page-card {
+  display: grid;
+  gap: 16px;
+  > img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  p {
+    color: var(--muted);
+  }
+  .status-badge {
+    justify-self: start;
+  }
+}
+.cms-preview {
+  background: var(--bg);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.promotion-page {
+  padding-top: 60px;
+  padding-bottom: 80px;
+  overflow-wrap: anywhere;
+}
+.promotion-hero {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  padding-bottom: 64px;
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
+  h1 {
+    font-size: clamp(32px, 5vw, 64px);
+    line-height: 1.15;
+    margin: 22px 0;
+  }
+  p {
+    font-size: 19px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  img {
+    width: 45%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 28px;
+  }
+}
+.promotion-section {
+  display: flex;
+  gap: 48px;
+  padding: 56px 0;
+  border-top: 1px solid var(--border, #ddd);
+  align-items: center;
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
+  h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+  p {
+    white-space: pre-wrap;
+    line-height: 1.9;
+  }
+  img {
+    width: 40%;
+    max-height: 480px;
+    object-fit: contain;
+    border-radius: 20px;
+  }
+  &:nth-child(odd) {
+    flex-direction: row-reverse;
+  }
+}
+.home .hero-main h1 {
+  white-space: pre-line;
+}
+.journey-illustration > img,
+.campus-art > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 800px) {
+  .cms-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .promotion-hero,
+  .promotion-section,
+  .promotion-section:nth-child(odd) {
+    flex-direction: column;
+    gap: 28px;
+    align-items: stretch;
+    img {
+      width: 100%;
+      max-height: 420px;
+    }
+  }
+  .promotion-page {
+    padding-top: 32px;
+  }
+  .cms-account-list .setting-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}

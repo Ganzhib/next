@@ -9,22 +9,24 @@ import { CampusExplore } from "../components/campus-explore";
 import { Icon, SearchInput } from "../components/ui";
 
 export function Home() {
-  const { track } = useApp();
+  const { track, settings } = useApp();
+  const content = settings.homeContent;
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   return (
     <HomeCanvas>
       <section className="hero campus-bridge container" id="intro">
         <div className="hero-main">
-          <div className="hero-kicker">不止求职 / LIFE ON CAMPUS</div>
-          <h1>
-            学好一门课，
-            <br />
-            做出一个好项目。
-          </h1>
+          <div className="hero-kicker">
+            {content?.introKicker ?? "不止求职 / LIFE ON CAMPUS"}
+          </div>
+          <h1>{content?.introTitle ?? "学好一门课，\n做出一个好项目。"}</h1>
         </div>
         <div className="campus-search">
-          <p>从日常学习到毕业选择，找到适合你的工具。</p>
+          <p>
+            {content?.introDescription ??
+              "从日常学习到毕业选择，找到适合你的工具。"}
+          </p>
           <form
             onSubmit={(event) => {
               event.preventDefault();
@@ -56,7 +58,8 @@ export function Home() {
             >
               <span className="step-num">0{index + 1}</span>
               <Icon name={stage.icon} size={18} />
-              {stage.name}
+              {content?.cards.find((c) => c.id === `career-${stage.id}`)
+                ?.title ?? stage.name}
             </a>
           ))}
         </div>
@@ -71,7 +74,9 @@ export function Home() {
         className="container contribution campus-contribution"
         id="contribution"
       >
-        <h2>还有什么学习难题，想让工具帮帮忙？</h2>
+        <h2>
+          {content?.contributionTitle ?? "还有什么学习难题，想让工具帮帮忙？"}
+        </h2>
         <Link className="button secondary" to="/feedback">
           告诉我们
         </Link>
