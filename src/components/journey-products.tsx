@@ -54,7 +54,7 @@ export function JourneyProducts() {
                 ) : (
                   <Illustration
                     id={`career-${stage.id}` as IllustrationId}
-                    alt={stage.illustrationAlt}
+                    alt={custom?.alt ?? stage.illustrationAlt}
                     eager={index < 2}
                     priority={index === 0}
                   />
@@ -69,7 +69,7 @@ export function JourneyProducts() {
                   <>
                     <span className="journey-caption">精选产品</span>
                     <h4>{product.name}</h4>
-                    <p>{product.tagline}</p>
+                    <p>{custom?.description ?? product.tagline}</p>
                   </>
                 ) : (
                   <>

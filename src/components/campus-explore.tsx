@@ -33,7 +33,7 @@ export function CampusExplore() {
                 ) : (
                   <Illustration
                     id={`campus-${direction.id}` as IllustrationId}
-                    alt={direction.alt}
+                    alt={custom?.alt ?? direction.alt}
                   />
                 )}
                 <span className="campus-index">0{index + 1}</span>

@@ -280,9 +280,16 @@ export const defaultHomeContent: HomeContent = {
   ],
 };
 export function HomeContentEditor() {
-  const { settings, save, toast } = useApp();
+  const { settings, save, toast, products } = useApp();
   const [form, setForm] = useState({
       ...defaultHomeContent,
+      cards: defaultHomeContent.cards.map((card) => {
+        const stage = careerJourney.find((s) => `career-${s.id}` === card.id);
+        const product =
+          stage &&
+          products.find((p) => !p.demo && stage.stages.includes(p.stage));
+        return product ? { ...card, description: product.tagline } : card;
+      }),
       ...settings.homeContent,
     }),
     [error, setError] = useState(""),
