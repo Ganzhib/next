@@ -34,6 +34,7 @@ test("真实后台登录、宣传页草稿隔离、发布跨浏览器可见、�
   await page.getByLabel("登录密码").fill("test-owner-password-123!");
   await page.getByRole("button", { name: "进入运营后台" }).click();
   await expect(page.getByText("服务器数据", { exact: true })).toBeVisible();
+  await expect(page.locator(".admin-nav-group a")).toHaveCount(6);
   await page.getByRole("link", { name: "宣传页面", exact: true }).click();
   await page.getByRole("link", { name: "新建宣传页" }).click();
   await page.getByLabel("页面标题", { exact: true }).fill("校园图文测试");
@@ -67,24 +68,72 @@ test("真实后台登录、宣传页草稿隔离、发布跨浏览器可见、�
     visitor.getByRole("heading", { name: "校园图文测试" }),
   ).toBeVisible();
   await expect(visitor.getByText("这段图文通过数据库发布。")).toBeVisible();
-  await page.getByRole("link", { name: "首页图文", exact: true }).click();
+  await page.getByRole("link", { name: "首页管理", exact: true }).click();
+  await page.getByRole("button", { name: /校园探索 正在显示/ }).click();
   await page
     .getByLabel("校园区标题", { exact: true })
     .fill("在校园，探索更多可能。");
-  await page.getByRole("button", { name: "发布首页图文" }).click();
-  await expect(page.getByRole("status")).toContainText("首页图文已发布");
+  await page.getByRole("button", { name: "发布首页" }).click();
+  await expect(page.getByRole("status")).toContainText("首页已发布");
+  await page.getByRole("button", { name: /求职方向合集 正在显示/ }).click();
+  await page.locator(".home-card-editor summary").first().click();
+  await page.getByLabel("career-prepare收录方式").selectOption("manual");
+  await page
+    .getByLabel("career-prepare收录 Interview Lab", { exact: true })
+    .check();
+  await page.getByRole("button", { name: "发布首页", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("首页已发布");
+  await visitor.goto("http://127.0.0.1:5180/directions/career-prepare");
+  await expect(
+    visitor.locator(".direction-products .product-card"),
+  ).toHaveCount(2);
+  await expect(visitor.locator(".direction-products")).toContainText(
+    "Magic Resume",
+  );
+  await expect(visitor.locator(".direction-products")).toContainText(
+    "Interview Lab",
+  );
+  await visitor.screenshot({ path: "test-results/backend-direction-desktop.png", fullPage: true });
+  await visitor.setViewportSize({ width: 390, height: 844 });
+  expect(await visitor.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await visitor.screenshot({ path: "test-results/backend-direction-mobile.png", fullPage: true });
+  await visitor.getByRole("button", { name: "切换明暗主题" }).click();
+  await expect(visitor.locator("html")).toHaveAttribute("data-theme", "dark");
+  await visitor.reload();
+  await expect(visitor.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await page
+    .getByLabel("career-prepare收录 Magic Resume", { exact: true })
+    .uncheck();
+  await page
+    .getByLabel("career-prepare收录 Interview Lab", { exact: true })
+    .uncheck();
+  await page.getByRole("button", { name: "发布首页", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("首页已发布");
+  await visitor.reload();
+  await expect(
+    visitor.getByRole("heading", { name: "好工具，敬请期待。" }),
+  ).toBeVisible();
+  await page.getByLabel("career-prepare收录方式").selectOption("auto");
+  await page.getByRole("button", { name: "发布首页", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("首页已发布");
+  await page.screenshot({
+    path: "test-results/backend-home-directions.png",
+    fullPage: true,
+  });
   await visitor.goto("http://127.0.0.1:5180/");
   await expect(
     visitor.getByRole("heading", { name: "在校园，探索更多可能。" }),
   ).toBeVisible();
   await page.reload();
+  await page.getByRole("button", { name: /校园探索 正在显示/ }).click();
   await expect(page.getByLabel("校园区标题", { exact: true })).toHaveValue(
     "在校园，探索更多可能。",
   );
   await page
     .getByLabel("校园区标题", { exact: true })
     .fill("在学校，也有自己的下一程。");
-  await page.getByRole("button", { name: "发布首页图文" }).click();
+  await page.getByRole("button", { name: "发布首页" }).click();
   await page.getByRole("link", { name: "宣传页面", exact: true }).click();
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "删除 校园图文测试" }).click();

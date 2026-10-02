@@ -24,7 +24,7 @@ test("首页视觉、收藏持久化和移动端布局", async ({ page }) => {
           images.every(
             (image) =>
               (image as HTMLImageElement).complete &&
-              (image as HTMLImageElement).currentSrc.includes('/media/') &&
+              (image as HTMLImageElement).currentSrc.includes("/media/") &&
               (image as HTMLImageElement).naturalWidth > 0,
           ),
         ),
@@ -54,13 +54,26 @@ test("首页视觉、收藏持久化和移动端布局", async ({ page }) => {
   ]);
   await expect(page.locator(".journey-card.is-upcoming")).toHaveCount(3);
   await expect(page.locator(".journey-coming-soon")).toHaveText([
-    "敬请期待",
-    "敬请期待",
-    "敬请期待",
+    "探索这个方向",
+    "探索这个方向",
+    "探索这个方向",
   ]);
-  await expect(page.locator(".journey-card.is-upcoming a")).toHaveCount(0);
-  await expect(page.locator("#journey-prepare h4")).toHaveText("Magic Resume");
-  await expect(page.locator("#journey-mock h4")).toHaveText("Interview Lab");
+  await expect(page.locator(".journey-card.is-upcoming a")).toHaveCount(9);
+  await expect(page.locator("#featured")).not.toContainText("Magic Resume");
+  await expect(page.locator("#featured")).not.toContainText("Interview Lab");
+  await page.getByRole("link", { name: "探索打磨简历", exact: true }).click();
+  await expect(page).toHaveURL(/\/directions\/career-prepare$/);
+  await expect(page.locator(".direction-products .product-card")).toHaveCount(
+    1,
+  );
+  await expect(page.locator(".direction-products")).toContainText(
+    "Magic Resume",
+  );
+  await page.goto("/directions/career-practice");
+  await expect(
+    page.getByRole("heading", { name: "好工具，敬请期待。" }),
+  ).toBeVisible();
+  await page.goto("/");
   await page
     .locator(".stage-ribbon")
     .getByRole("link", { name: /技术准备/ })
@@ -81,7 +94,7 @@ test("首页视觉、收藏持久化和移动端布局", async ({ page }) => {
     "科研与升学",
   ]);
   await expect(page.locator(".campus-status.upcoming")).toHaveCount(3);
-  await expect(page.locator(".campus-story a")).toHaveCount(0);
+  await expect(page.locator(".campus-story a")).toHaveCount(9);
   await page.locator("#campus").scrollIntoViewIfNeeded();
   await expect
     .poll(() =>
@@ -91,7 +104,7 @@ test("首页视觉、收藏持久化和移动端布局", async ({ page }) => {
           images.every(
             (image) =>
               (image as HTMLImageElement).complete &&
-              (image as HTMLImageElement).currentSrc.includes('/media/') &&
+              (image as HTMLImageElement).currentSrc.includes("/media/") &&
               (image as HTMLImageElement).naturalWidth > 0,
           ),
         ),
@@ -136,12 +149,14 @@ test("后台创建产品、配置链接、前台搜索和归档闭环", async ({
   await page.getByLabel("设置本地访问口令").fill("test-secret-2026");
   await page.getByRole("button", { name: "创建并进入" }).click();
   await expect(
-    page.getByRole("heading", { name: "今天，也让好产品被看见。" }),
+    page.getByRole("heading", { name: "首页管理", exact: true }),
   ).toBeVisible();
   await page.screenshot({
     path: "test-results/admin-desktop.png",
     fullPage: true,
   });
+  await expect(page.locator(".admin-nav-group a")).toHaveCount(6);
+  await page.getByRole("link", { name: "产品管理", exact: true }).click();
   await page.getByRole("link", { name: "新增产品", exact: true }).click();
   await page.getByLabel("产品名称", { exact: true }).fill("测试求职产品");
   await page.getByLabel("产品标识 Slug").fill("test-career-product");
@@ -152,10 +167,7 @@ test("后台创建产品、配置链接、前台搜索和归档闭环", async ({
   await page
     .getByRole("combobox", { name: /求职阶段/ })
     .selectOption("practice");
-  await page.getByRole("button", { name: "链接与归因", exact: true }).click();
   await page.getByLabel("独立产品网址").fill("https://example.com/career");
-  await page.getByRole("button", { name: "从网址提取允许域名" }).click();
-  await page.getByRole("button", { name: "展示与发布", exact: true }).click();
   await page.getByLabel("发布状态").selectOption("published");
   await page.getByRole("button", { name: "保存产品", exact: true }).click();
   await page.getByLabel("搜索后台产品").fill("测试求职");
@@ -164,14 +176,21 @@ test("后台创建产品、配置链接、前台搜索和归档闭环", async ({
   ).toBeVisible();
   await page.getByRole("link", { name: "查看网站" }).getAttribute("href");
   await page.goto("/");
-  await expect(page.locator("#journey-practice h4")).toHaveText("测试求职产品");
+  await expect(
+    page.locator("#journey-practice .journey-footnote"),
+  ).toContainText("1 款工具");
+  await page.getByRole("link", { name: "探索技术准备", exact: true }).click();
+  await expect(page.locator(".direction-products")).toContainText(
+    "测试求职产品",
+  );
+  await page.goto("/");
   await expect(page.locator(".journey-card.is-upcoming")).toHaveCount(2);
   await expect(page.locator(".campus-study .campus-status")).toHaveText(
-    "探索工具",
+    "1 款工具 ↗",
   );
-  await expect(page.locator(".campus-study a")).toHaveAttribute(
+  await expect(page.locator(".campus-study .campus-status")).toHaveAttribute(
     "href",
-    "/categories/campus-study",
+    "/directions/campus-study",
   );
   await page.goto("/products?q=测试求职");
   await expect(page.locator(".product-card")).toHaveCount(1);
@@ -193,9 +212,9 @@ test("后台创建产品、配置链接、前台搜索和归档闭环", async ({
   await page.goto("/");
   await expect(
     page.locator("#journey-practice .journey-coming-soon"),
-  ).toHaveText("敬请期待");
+  ).toHaveText("探索这个方向");
   await expect(page.locator(".campus-study .campus-status")).toHaveText(
-    "敬请期待",
+    "敬请期待 ↗",
   );
   await page.goto("/products?q=测试求职");
   await expect(
@@ -244,20 +263,17 @@ test("首页模块发布、导航管理、演示目录分页和深色模式", as
   await page.goto("/admin");
   await page.getByLabel("设置本地访问口令").fill("test-secret-2026");
   await page.getByRole("button", { name: "创建并进入" }).click();
-  await page.getByRole("link", { name: "首页编排", exact: true }).click();
-  await page
-    .locator(".module-row")
-    .filter({ hasText: "求职阶段入口" })
-    .getByRole("checkbox")
-    .uncheck();
-  await page.getByRole("button", { name: "发布编排" }).click();
-  await expect(page.getByRole("status")).toHaveText("首页编排已生效");
-  await page.getByRole("link", { name: "导航管理", exact: true }).click();
+  await page.getByLabel("显示求职方向导航", { exact: true }).uncheck();
+  await page.getByRole("button", { name: "发布首页" }).click();
+  await expect(page.getByRole("status")).toHaveText("首页已发布，前台同步更新");
+  await page.getByRole("link", { name: "系统设置", exact: true }).click();
+  await page.getByRole("link", { name: "顶部导航", exact: true }).click();
   await page.getByLabel("导航名称", { exact: true }).first().fill("首页发现");
   await page.locator(".navigation-row").first().getByRole("checkbox").check();
   await page.getByRole("button", { name: "保存导航", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("导航已保存");
-  await page.getByRole("link", { name: "站点设置", exact: true }).click();
+  await page.getByRole("link", { name: "基本设置", exact: true }).click();
+  await page.getByText("高级维护：演示数据与内容备份", { exact: true }).click();
   await page.getByLabel("显示演示产品", { exact: true }).check();
   await page.getByRole("button", { name: "保存站点配置" }).click();
   await expect(page.getByRole("status")).toHaveText("站点设置已保存");

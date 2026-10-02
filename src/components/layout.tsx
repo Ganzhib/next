@@ -33,7 +33,7 @@ export function Brand() {
   );
 }
 export function Layout() {
-  const { settings, save, compare, track, products } = useApp();
+  const { settings, theme, setTheme, compare, track, products } = useApp();
   const [menu, setMenu] = useState(false),
     [search, setSearch] = useState(false),
     [query, setQuery] = useState("");
@@ -120,11 +120,7 @@ export function Layout() {
         <div className="footer-top">
           <div>
             <Brand />
-            <p>
-              从课堂上的一个问题，
-              <br />
-              到校园外的下一程。
-            </p>
+            <p style={{ whiteSpace: "pre-line" }}>{settings.tagline}</p>
           </div>
           <div>
             <h4>发现产品</h4>
@@ -154,18 +150,9 @@ export function Layout() {
             <button
               className="icon-button"
               aria-label="切换明暗主题"
-              onClick={() =>
-                void save("settings", {
-                  ...settings,
-                  theme: settings.theme === "light" ? "dark" : "light",
-                })
-              }
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             >
-              {settings.theme === "light" ? (
-                <Moon size={16} />
-              ) : (
-                <Sun size={16} />
-              )}
+              {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
             </button>
             <Link to="/settings" aria-label="设置">
               <Settings2 size={16} />

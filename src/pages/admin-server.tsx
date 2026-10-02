@@ -50,7 +50,9 @@ export function ImageField({
         <option value="">使用现有漫画插画…</option>
         {Object.entries(images).map(([id, image]) => (
           <option key={id} value={image.webp[1].src}>
-            {id}
+            {careerJourney.find((s) => `career-${s.id}` === id)?.name ??
+              campusDirections.find((s) => `campus-${s.id}` === id)?.title ??
+              id}
           </option>
         ))}
       </select>

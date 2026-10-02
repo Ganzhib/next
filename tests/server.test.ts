@@ -220,6 +220,24 @@ test("服务端字段校验、危险链接与批量事务回滚", async () => {
 test("首页配置由服务器存储，公开浏览器可读取", async () => {
   const settings = (await request("/api/admin/data/settings")).data[0];
   settings.tagline = "数据库同步测试";
+  settings.homeContent = {
+    introKicker: "校园",
+    introTitle: "学习",
+    introDescription: "工具",
+    journeyTitle: "方向",
+    campusTitle: "校园",
+    contributionTitle: "反馈",
+    cards: [
+      {
+        id: "career-prepare",
+        title: "简历方向",
+        description: "简历与作品集",
+        image: "",
+        alt: "",
+        productIds: ["magic-resume", "interview-lab"],
+      },
+    ],
+  };
   assert.equal(
     (
       await request("/api/admin/batch", "POST", [
@@ -233,6 +251,16 @@ test("首页配置由服务器存储，公开浏览器可读取", async () => {
       .tagline,
     "数据库同步测试",
   );
+  assert.deepEqual(
+    (await request("/api/content", "GET", undefined, false)).data.settings[0]
+      .homeContent.cards[0].productIds,
+    ["magic-resume", "interview-lab"],
+  );
+  // 不让此测试的人工关联影响后续浏览器测试使用的种子方向。
+  delete settings.homeContent;
+  await request("/api/admin/batch", "POST", [
+    { store: "settings", value: settings },
+  ]);
 });
 test("最后一位超级管理员保护，运营角色无账号权限，停用立即撤销会话", async () => {
   const owner = (await request("/api/auth/session")).data;

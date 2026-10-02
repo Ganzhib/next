@@ -31,6 +31,8 @@ export const homeContentSchema = z.object({
         description: text,
         image: imageSchema,
         alt: text,
+        // 未配置时按方向自动收录；空数组表示暂未收录；一个方向可包含多个产品。
+        productIds: z.array(z.string().min(1).max(100)).max(200).optional(),
       }),
     )
     .max(16),

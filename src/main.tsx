@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import { AppProvider, useApp } from "./app/context";
 import { Layout } from "./components/layout";
 import { Home } from "./pages/home";
+import { DirectionPage } from "./pages/direction";
 import { Catalog, ProductDetail, Launch, Compare } from "./pages/catalog";
 import {
   Collections,
@@ -20,37 +21,29 @@ import {
 } from "./pages/workspace";
 import {
   AdminLayout,
-  AdminOverview,
   AdminProducts,
   ProductEditor,
   AdminTaxonomies,
-  AdminCollections,
-  AdminPlacements,
   AdminAnalytics,
   AdminSubmissions,
-  AdminAudit,
-  AdminLinkHealth,
-  AdminSiteSettings,
-  AdminUsers,
-  AdminRecords,
-  AdminNotifications,
 } from "./pages/admin";
 import { Empty } from "./components/ui";
-import { HomepageEditor, NavigationEditor } from "./pages/admin-layout-editor";
 import "./styles/main.scss";
 import "./styles/_cms.scss";
-import {
-  AdminPages,
-  PromotionEditor,
-  HomeContentEditor,
-} from "./pages/admin-server";
+import { AdminPages, PromotionEditor } from "./pages/admin-server";
 import { PromotionPage } from "./pages/promotion";
+import {
+  SimpleHomepage,
+  SimpleProductEditor,
+  SimpleSettings,
+} from "./pages/admin-simple";
+import "./styles/_admin-simple.scss";
 function App() {
   const { loading, error } = useApp();
   if (error)
     return (
       <div className="boot">
-        <h1>暂时无法打开本地数据</h1>
+        <h1>暂时无法加载网站内容</h1>
         <p>{error}</p>
         <button onClick={() => location.reload()}>重新加载</button>
       </div>
@@ -66,6 +59,7 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="directions/:id" element={<DirectionPage />} />
         <Route path="p/:slug" element={<PromotionPage />} />
         <Route path="products" element={<Catalog />} />
         <Route path="products/:slug" element={<ProductDetail />} />
@@ -111,39 +105,50 @@ function App() {
         />
       </Route>
       <Route path="admin" element={<AdminLayout />}>
-        <Route index element={<AdminOverview />} />
+        <Route index element={<Navigate to="/admin/homepage" replace />} />
         <Route path="products" element={<AdminProducts />} />
-        <Route path="products/new" element={<ProductEditor />} />
-        <Route path="products/:id" element={<ProductEditor />} />
+        <Route path="products/new" element={<SimpleProductEditor />} />
+        <Route path="products/:id" element={<SimpleProductEditor />} />
+        <Route path="products/:id/advanced" element={<ProductEditor />} />
         {["categories", "tags", "job-stages", "job-roles"].map((path) => (
           <Route key={path} path={path} element={<AdminTaxonomies />} />
         ))}
-        <Route path="collections" element={<AdminCollections />} />
-        <Route path="placements" element={<AdminPlacements />} />
-        <Route path="homepage" element={<HomepageEditor />} />
-        <Route path="content" element={<HomeContentEditor />} />
+        <Route path="homepage" element={<SimpleHomepage />} />
+        <Route
+          path="content"
+          element={<Navigate to="/admin/homepage" replace />}
+        />
         <Route path="pages" element={<AdminPages />} />
         <Route path="pages/new" element={<PromotionEditor />} />
         <Route path="pages/:id" element={<PromotionEditor />} />
-        <Route path="navigation" element={<NavigationEditor />} />
+        <Route path="navigation" element={<SimpleSettings />} />
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="funnels" element={<AdminAnalytics />} />
         <Route path="submissions" element={<AdminSubmissions />} />
         <Route path="claims" element={<AdminSubmissions />} />
-        <Route path="audit-logs" element={<AdminAudit />} />
-        <Route path="link-health" element={<AdminLinkHealth />} />
-        <Route path="settings" element={<AdminSiteSettings />} />
-        <Route path="users" element={<AdminUsers />} />
-        <Route path="roles-permissions" element={<AdminUsers />} />
-        <Route path="notifications" element={<AdminNotifications />} />
+        <Route path="audit-logs" element={<SimpleSettings />} />
+        <Route path="settings" element={<SimpleSettings />} />
+        <Route path="users" element={<SimpleSettings />} />
+        <Route
+          path="roles-permissions"
+          element={<Navigate to="/admin/users" replace />}
+        />
         {[
           "commercial",
           "experiments",
           "relationships",
           "seo",
           "feature-flags",
+          "collections",
+          "placements",
+          "notifications",
+          "link-health",
         ].map((path) => (
-          <Route key={path} path={path} element={<AdminRecords />} />
+          <Route
+            key={path}
+            path={path}
+            element={<Navigate to="/admin/homepage" replace />}
+          />
         ))}
         <Route path="*" element={<Empty title="尚未找到这个管理页面" />} />
       </Route>

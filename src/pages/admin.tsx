@@ -11,24 +11,15 @@ import {
   Activity as ActivityIcon,
   ArrowUpRight,
   BarChart3,
-  Bell,
   BookOpen,
   Check,
   ChevronRight,
   CircleHelp,
-  Compass,
   Copy,
   Download,
   Eye,
-  FileClock,
-  Flag,
-  FolderOpen,
-  Globe,
-  GripVertical,
   LayoutDashboard,
   LayoutGrid,
-  Link2,
-  ListChecks,
   LockKeyhole,
   LogOut,
   Menu,
@@ -41,7 +32,6 @@ import {
   SlidersHorizontal,
   Trash2,
   Upload,
-  Users,
   type LucideIcon,
 } from "lucide-react";
 import { useApp } from "../app/context";
@@ -68,36 +58,19 @@ import {
 import { downloadJson } from "./workspace";
 const navGroups: { label: string; links: [string, string, LucideIcon][] }[] = [
   {
-    label: "工作空间",
+    label: "网站内容",
     links: [
-      ["", "概览", LayoutDashboard],
+      ["homepage", "首页管理", LayoutDashboard],
       ["products", "产品管理", LayoutGrid],
-      ["collections", "精选合集", FolderOpen],
-      ["placements", "推荐与编排", GripVertical],
-      ["homepage", "首页编排", LayoutDashboard],
-      ["content", "首页图文", Pencil],
       ["pages", "宣传页面", BookOpen],
-      ["navigation", "导航管理", Compass],
-      ["categories", "分类与标签", ListChecks],
     ],
   },
   {
-    label: "了解你的用户",
+    label: "运营与维护",
     links: [
-      ["analytics", "数据分析", BarChart3],
-      ["submissions", "提交与反馈", BookOpen],
-      ["users", "用户与权限", Users],
-      ["link-health", "链接状态", Link2],
-    ],
-  },
-  {
-    label: "平台设置",
-    links: [
-      ["commercial", "商业合作", Globe],
-      ["experiments", "实验与开关", Flag],
-      ["notifications", "消息管理", Bell],
-      ["audit-logs", "操作日志", FileClock],
-      ["settings", "站点设置", Settings],
+      ["submissions", "用户反馈", BookOpen],
+      ["analytics", "访问统计", BarChart3],
+      ["settings", "系统设置", Settings],
     ],
   },
 ];
@@ -232,6 +205,18 @@ export function AdminLayout() {
                 key={path}
                 end={path === ""}
                 to={`/admin${path ? "/" + path : ""}`}
+                className={({ isActive }) =>
+                  isActive ||
+                  (path === "settings" &&
+                    [
+                      "/admin/users",
+                      "/admin/navigation",
+                      "/admin/audit-logs",
+                      "/admin/roles-permissions",
+                    ].includes(location.pathname))
+                    ? "active"
+                    : ""
+                }
               >
                 <I size={17} />
                 {label}
@@ -602,6 +587,9 @@ export function AdminProducts() {
         title="让好产品，各就其位。"
         description={`${allProducts.filter((p) => !p.demo).length} 个正式产品 · ${allProducts.filter((p) => p.demo).length} 个开发演示产品`}
       >
+        <Link className="text-link" to="/admin/categories">
+          管理分类
+        </Link>
         <button
           className="button secondary"
           onClick={() => downloadJson("next-products.json", allProducts)}
@@ -1791,7 +1779,11 @@ export function AdminAnalytics() {
       <div className="stat-grid">
         {[
           ["页面访问", visits, "page_viewed"],
-          ["本地会话", sessions, "每次打开页面独立计算"],
+          [
+            serverMode ? "访问会话" : "本地会话",
+            sessions,
+            "每次打开页面独立计算",
+          ],
           ["产品跳转", launches, "主动继续访问"],
           ["有效曝光", impressions, "50% 可见，持续 1 秒"],
         ].map(([l, v, s]) => (
@@ -1937,7 +1929,11 @@ export function AdminAnalytics() {
         {!filtered.length && (
           <Empty
             title="等待第一条真实事件"
-            description="在隐私设置中允许本地分析，然后浏览产品、搜索或访问独立产品。"
+            description={
+              serverMode
+                ? "访客同意行为分析后，真实浏览、搜索与独立产品跳转会出现在这里。"
+                : "在隐私设置中允许本地分析，然后浏览产品、搜索或访问独立产品。"
+            }
           />
         )}
       </div>

@@ -1,9 +1,8 @@
 import { Children, isValidElement, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "../app/context";
-import { defaultSettings } from "../domain/seed";
 import { careerJourney } from "../domain/journey";
-import { normalizeHomeModules } from "../domain/campus";
+import { homeModules } from "../domain/home-config";
 import { JourneyProducts } from "../components/journey-products";
 import { CampusExplore } from "../components/campus-explore";
 import { Icon, SearchInput } from "../components/ui";
@@ -87,30 +86,18 @@ export function Home() {
 
 function HomeCanvas({ children }: { children: ReactNode }) {
   const { settings, placements } = useApp();
-  const modules = normalizeHomeModules(
-    settings.homeModules ?? defaultSettings.homeModules!,
-  );
+  const modules = homeModules(settings, placements);
   const nodes = Children.toArray(children).filter(
     isValidElement<{ id?: string }>,
   );
   const moduleFor = (node: (typeof nodes)[number]) =>
     modules.find((module) => module.id === node.props.id);
   const orderFor = (node: (typeof nodes)[number]) =>
-    node.props.id === "intro"
-      ? (modules.find((module) => module.id === "featured")?.order ?? 2) + 0.5
-      : (moduleFor(node)?.order ?? 0);
+    moduleFor(node)?.order ?? 0;
   return (
     <div className="home">
       {nodes
-        .filter(
-          (node) =>
-            moduleFor(node)?.enabled !== false &&
-            !(
-              node.props.id === "featured" &&
-              placements.find((placement) => placement.id === "home-primary")
-                ?.enabled === false
-            ),
-        )
+        .filter((node) => moduleFor(node)?.enabled !== false)
         .sort((a, b) => orderFor(a) - orderFor(b))}
     </div>
   );

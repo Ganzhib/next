@@ -1,133 +1,93 @@
 import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 import { useApp } from "../app/context";
-import { careerJourney } from "../domain/journey";
+import { directionGroups } from "../domain/home-config";
 import { SectionTitle } from "./ui";
 import { Illustration, type IllustrationId } from "./illustration";
 
 export function JourneyProducts() {
   const { products, placements, track, settings } = useApp();
-  const primary = placements.find((p) => p.id === "home-primary" && p.enabled);
-  // 推荐位只调整同阶段内的优先顺序，不打乱求职路线；演示数据不替代真实占位。
-  const ranked = [...products]
-    .filter((p) => !p.demo)
-    .sort((a, b) => {
-      const rank = (id: string) => {
-        const index = primary?.productIds.indexOf(id) ?? -1;
-        return index < 0 ? Number.MAX_SAFE_INTEGER : index;
-      };
-      return rank(a.id) - rank(b.id) || a.order - b.order;
-    });
-  const groups = careerJourney.map((stage) => ({
-    ...stage,
-    products: ranked.filter((p) => stage.stages.includes(p.stage)),
-  }));
-  const upcoming = groups.filter((stage) => !stage.products.length).length;
+  const directions = directionGroups(
+    products,
+    placements,
+    settings.homeContent,
+  ).filter((d) => d.id.startsWith("career-"));
   return (
     <>
       <SectionTitle
-        eyebrow="YOUR CAREER JOURNEY / 一路向前"
-        title={settings.homeContent?.journeyTitle ?? "求职的每一步，都在这里。"}
+        eyebrow="FIND YOUR DIRECTION / 从方向开始"
+        title={
+          settings.homeContent?.journeyTitle ?? "选一个方向，找到趁手的工具。"
+        }
         to="/products"
-        label="探索产品库"
+        label="浏览全部工具"
       />
       <div className="journey-grid">
-        {groups.map((stage, index) => {
-          const product = stage.products[0];
-          const custom = settings.homeContent?.cards.find(
-            (c) => c.id === `career-${stage.id}`,
-          );
+        {directions.map((direction, index) => {
+          const path = `/directions/${direction.id}`;
           return (
             <article
-              key={stage.id}
-              id={`journey-${stage.id}`}
-              className={`journey-card ${product ? "has-product" : "is-upcoming"} journey-${stage.id}`}
-              aria-labelledby={`journey-title-${stage.id}`}
+              key={direction.id}
+              id={`journey-${direction.id.replace("career-", "")}`}
+              className={`journey-card ${direction.products.length ? "has-product" : "is-upcoming"}`}
+              aria-labelledby={`direction-${direction.id}`}
               tabIndex={-1}
             >
-              <div className="journey-illustration">
-                {custom?.image ? (
+              <Link
+                className="journey-illustration"
+                to={path}
+                aria-label={`探索${direction.title}`}
+                onClick={() =>
+                  void track("direction_opened", {
+                    query: direction.id,
+                    placement: "home_directions",
+                    position: index,
+                  })
+                }
+              >
+                {direction.image ? (
                   <img
-                    src={custom.image}
-                    alt={custom.alt}
+                    src={direction.image}
+                    alt={direction.alt}
                     loading={index < 2 ? "eager" : "lazy"}
                   />
                 ) : (
                   <Illustration
-                    id={`career-${stage.id}` as IllustrationId}
-                    alt={custom?.alt ?? stage.illustrationAlt}
+                    id={direction.id as IllustrationId}
+                    alt={direction.alt}
                     eager={index < 2}
                     priority={index === 0}
                   />
                 )}
                 <span className="journey-frame-number">0{index + 1}</span>
-              </div>
-              <h3 id={`journey-title-${stage.id}`}>
-                {custom?.title ?? stage.name}
+              </Link>
+              <h3 id={`direction-${direction.id}`}>
+                <Link to={path}>{direction.title}</Link>
               </h3>
               <div className="journey-product">
-                {product ? (
-                  <>
-                    <span className="journey-caption">精选产品</span>
-                    <h4>{product.name}</h4>
-                    <p>{custom?.description ?? product.tagline}</p>
-                  </>
-                ) : (
-                  <>
-                    <span className="journey-caption">COMING SOON</span>
-                    <h4>{stage.upcoming}</h4>
-                    <p>{custom?.description ?? stage.note}</p>
-                  </>
-                )}
+                <p>{direction.description}</p>
               </div>
               <div className="journey-card-footer">
-                {product ? (
-                  <>
-                    <Link
-                      className="button full"
-                      to={
-                        product.targetUrl
-                          ? `/go/${product.slug}?placement=home_journey`
-                          : product.detailEnabled
-                            ? `/products/${product.slug}`
-                            : `/go/${product.slug}`
-                      }
-                      onClick={() =>
-                        void track("product_card_clicked", {
-                          productId: product.id,
-                          placement: "home_journey",
-                          position: index,
-                        })
-                      }
-                    >
-                      {product.targetUrl ? "开始使用" : "了解产品"}
-                    </Link>
-                    {stage.products.length > 1 ? (
-                      <Link className="journey-more" to={`/stages/${stage.id}`}>
-                        查看该阶段 {stage.products.length} 款产品
-                      </Link>
-                    ) : (
-                      <span className="journey-footnote">
-                        {product.targetUrl ? "前往独立产品" : "访问链接待接入"}
-                      </span>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <span className="journey-coming-soon">敬请期待</span>
-                    <span className="journey-footnote">好工具，值得等一等</span>
-                  </>
-                )}
+                <Link
+                  className={`button full secondary ${direction.products.length ? "" : "journey-coming-soon"}`}
+                  to={path}
+                >
+                  {direction.products.length ? "查看工具合集" : "探索这个方向"}
+                  <ArrowUpRight size={16} />
+                </Link>
+                <span className="journey-footnote">
+                  {direction.products.length
+                    ? `${direction.products.length} 款工具 · 持续收录`
+                    : "工具筹备中 · 敬请期待"}
+                </span>
               </div>
             </article>
           );
         })}
       </div>
       <div className="journey-summary">
-        <span>每一步，都算数。</span>
-        <span>
-          {groups.length - upcoming} 个阶段已有产品
-          {upcoming ? ` · ${upcoming} 个阶段敬请期待` : " · 按自己的节奏出发"}
-        </span>
+        <span>先找到方向，再挑选适合自己的工具。</span>
+        <span>5 个求职方向 · 各有一份工具合集</span>
       </div>
     </>
   );

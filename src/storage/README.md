@@ -2,6 +2,8 @@
 
 ## 当前实现
 
+首页方向合集：漫画方向与真实产品分层。`settings.homeContent.cards[].productIds` 可选；缺省按方向分类 / 阶段自动收录，数组是手动收录的产品 ID 集合（有序），空数组表示空合集。后台、首页产品数量与 `/directions/:id` 共用解析逻辑，只公开已发布且已上线的真实产品。无需清空 IndexedDB 或 PostgreSQL；旧配置缺少该字段时保持自动收录。方向编辑统一在「首页管理」，产品基础信息在「产品管理」。
+
 2026-10-02 已实现服务端适配器 `http.ts`，默认通过同源 `/api` 访问 PostgreSQL；个人资料、收藏与访问历史仍保留 IndexedDB。只有明确设置 `VITE_STORAGE_MODE=local` 时才使用旧的纯浏览器模式。入口为 `src/storage/index.ts`，页面仍通过 `Repository` 异步接口读写。
 
 服务端模式不会运行浏览器种子初始化或定时发布；初始化、权限校验、审计和定时发布均由后端负责。管理员 Cookie 是 HttpOnly，不把登录令牌写入本地存储。旧 IndexedDB 原样保留，可导出后由超级管理员确认合并迁移。完整行为与备份边界见 `server/README.md`。以下为保留的本地模式结构及历史迁移设计，不代表线上权限或存储实现。

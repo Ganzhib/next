@@ -171,7 +171,7 @@ export function Workspace() {
   );
 }
 export function Settings() {
-  const { profile, updateProfile, settings, save, toast, refresh } = useApp();
+  const { profile, updateProfile, theme, setTheme, toast, refresh } = useApp();
   const path = useLocation().pathname;
   const [name, setName] = useState(profile.name),
     [role, setRole] = useState(profile.role),
@@ -359,12 +359,9 @@ export function Settings() {
                 <input
                   type="checkbox"
                   aria-label="深色外观"
-                  checked={settings.theme === "dark"}
+                  checked={theme === "dark"}
                   onChange={(e) =>
-                    void save("settings", {
-                      ...settings,
-                      theme: e.target.checked ? "dark" : "light",
-                    })
+                    setTheme(e.target.checked ? "dark" : "light")
                   }
                 />
               </div>

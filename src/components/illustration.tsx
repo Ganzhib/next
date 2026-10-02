@@ -12,17 +12,20 @@ export function Illustration({
   alt,
   eager = false,
   priority = false,
+  sizes: customSizes,
 }: {
   id: IllustrationId;
   alt: string;
   eager?: boolean;
   priority?: boolean;
+  sizes?: string;
 }) {
   const picture = useRef<HTMLPictureElement>(null);
   const [visible, setVisible] = useState(eager);
   const [loaded, setLoaded] = useState(false);
   const asset = images[id];
-  const sizes = id.startsWith("career-") ? journeySizes : campusSizes;
+  const sizes =
+    customSizes ?? (id.startsWith("career-") ? journeySizes : campusSizes);
   useEffect(() => {
     if (visible) return;
     if (!("IntersectionObserver" in window)) {

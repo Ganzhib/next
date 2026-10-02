@@ -36,6 +36,8 @@ interface AppState {
   placements: Placement[];
   profile: Profile;
   settings: SiteSettings;
+  theme: "light" | "dark";
+  setTheme: (theme: "light" | "dark") => void;
   loading: boolean;
   error: string;
   refresh: () => Promise<void>;
@@ -80,6 +82,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [compare, setCompare] = useState<string[]>([]),
     [admin, setAdmin] = useState(false);
   const [sessionId] = useState(uid);
+  const [personalTheme, setPersonalTheme] = useState<"light" | "dark" | null>(
+    () => {
+      try {
+        const stored = localStorage.getItem("next-theme");
+        return stored === "light" || stored === "dark" ? stored : null;
+      } catch {
+        return null;
+      }
+    },
+  );
+  const theme = personalTheme ?? settings.theme;
+  function setTheme(value: "light" | "dark") {
+    setPersonalTheme(value);
+    try {
+      localStorage.setItem("next-theme", value);
+    } catch {
+      /* 私密模式仍可在本页切换。 */
+    }
+  }
   const impressions = useRef(new Set<string>());
   const channel = useRef<BroadcastChannel | null>(null);
   const profileRef = useRef(profile);
@@ -182,8 +203,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [loading, refresh, toast]);
   useEffect(() => {
-    document.documentElement.dataset.theme = settings.theme;
-  }, [settings.theme]);
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
   const track = useCallback(
     async (name: string, props: Partial<Activity> = {}) => {
       if (!profile.analytics) return;
@@ -314,6 +335,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         placements,
         profile,
         settings,
+        theme,
+        setTheme,
         loading,
         error,
         refresh,
