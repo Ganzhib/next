@@ -11,7 +11,6 @@ import {
   Activity as ActivityIcon,
   ArrowUpRight,
   BarChart3,
-  BookOpen,
   Check,
   ChevronRight,
   CircleHelp,
@@ -20,6 +19,7 @@ import {
   Eye,
   LayoutDashboard,
   LayoutGrid,
+  PackageOpen,
   LockKeyhole,
   LogOut,
   Menu,
@@ -60,18 +60,14 @@ const navGroups: { label: string; links: [string, string, LucideIcon][] }[] = [
   {
     label: "网站内容",
     links: [
+      ["tools", "工具集合", PackageOpen],
       ["homepage", "首页管理", LayoutDashboard],
       ["products", "产品管理", LayoutGrid],
-      ["pages", "宣传页面", BookOpen],
     ],
   },
   {
-    label: "运营与维护",
-    links: [
-      ["submissions", "用户反馈", BookOpen],
-      ["analytics", "访问统计", BarChart3],
-      ["settings", "系统设置", Settings],
-    ],
+    label: "设置",
+    links: [["settings", "系统设置", Settings]],
   },
 ];
 export function AdminLayout() {
@@ -128,7 +124,7 @@ export function AdminLayout() {
           <span className="gate-icon">
             <LockKeyhole size={28} />
           </span>
-          <span className="eyebrow">NEXT / OPERATOR WORKSPACE</span>
+          <span className="eyebrow">TAOQI / OPERATOR WORKSPACE</span>
           <h1>
             {serverMode || settings.adminPinHash
               ? "欢迎回来。"
@@ -188,7 +184,7 @@ export function AdminLayout() {
           </p>
         </div>
         <Link to="/" className="text-link">
-          返回下一程
+          返回淘气工具铺
         </Link>
       </div>
     );
@@ -276,7 +272,7 @@ export function AdminLayout() {
           <Outlet />
         </div>
         <footer className="admin-footer">
-          NEXT / 运营工作台<span>数据属于你 · 记得定期备份</span>
+          淘气工具铺 / 运营工作台<span>数据属于你 · 记得定期备份</span>
         </footer>
       </div>
     </div>
@@ -1215,7 +1211,7 @@ export function ProductEditor() {
                 )}
                 <div className="seo-preview">
                   <span>next.local / products / {product.slug}</span>
-                  <h3>{product.seoTitle || product.name} · 下一程 NEXT</h3>
+                  <h3>{product.seoTitle || product.name} · 淘气工具铺</h3>
                   <p>{product.seoDescription || product.tagline}</p>
                 </div>
               </>
@@ -2144,7 +2140,7 @@ export function AdminSiteSettings() {
     <>
       <AdminTitle
         eyebrow="SITE SETTINGS / 站点设置"
-        title="把下一程，做成你的样子。"
+        title="把淘气工具铺，做成你的样子。"
         description={
           serverMode
             ? "站点配置在服务器保存。超级管理员可导出、合并导入内容备份。完整数据库恢复请使用服务器维护脚本。"

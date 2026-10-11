@@ -318,5 +318,245 @@
         "bytes": 61066
       }
     ]
+  },
+  "tool-countdown": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3479555,
+    "placeholder": "data:image/webp;base64,UklGRtYAAABXRUJQVlA4IMoAAACwBQCdASoYABgAPwF2s1QrJySjKAgBYCAJaQDQHawAsWIQsj78asVtFu3VxDHxGNfJ+kVq4VgA/NCtSSq0HtB3Ex30BfQIlZ35JOPTSDaRzZ/qHo/8EilaEr2VK+AxqsqB5BmKrpjAbQUlaM/wnBFJwt92WW3sCbMrHw0IXEidLEo7AbeVU8df7YSI79e+HA7N6obWq78en6UdG/S9/uyKox438SwHHJLlCI/yQBrlMUaZzzHknEqTRe+AhrTHONp70cDZBffoHgAA",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/tool-countdown-384-ed76d256abb6.avif",
+        "bytes": 12541
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-countdown-768-8879af905ddd.avif",
+        "bytes": 45523
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-countdown-1152-d6c489f41564.avif",
+        "bytes": 95469
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/tool-countdown-384-332b2b886ecd.webp",
+        "bytes": 27406
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-countdown-768-19125fe3c153.webp",
+        "bytes": 103220
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-countdown-1152-afa9c67cd7e6.webp",
+        "bytes": 197294
+      }
+    ]
+  },
+  "tool-dashboard": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3257110,
+    "placeholder": "data:image/webp;base64,UklGRuQAAABXRUJQVlA4INgAAACQBQCdASoYABgAPwF2slOrJySiqAgBYCAJaQDQGYyKc2V/Nx625VaESzFG57CYE/ak28CgAAD+YCstofkdMStWVzOmtLSlReCQqypsHjilGKWWtyOmaKFR+ry+RiIm54VGHjZJ2zLiWMaHKWtUbOWp+ndohZYwtZiAyex8n7c9lcrnqL0l3g0wShp7L7x2QzMKPqz5GWhJ1nuvEXqi9TBjXTw7pW5ROpYhzA14+g7llWA6x8iNxbZI5/N+Awu+u5W6YsHYil6Yc4C/9DK0xJrxy+27FA1zgAA=",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/tool-dashboard-384-5e3361d15cbb.avif",
+        "bytes": 12095
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-dashboard-768-3ed0882da159.avif",
+        "bytes": 42345
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-dashboard-1152-51cc257ac32f.avif",
+        "bytes": 87259
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/tool-dashboard-384-c985772935a7.webp",
+        "bytes": 23736
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-dashboard-768-b2a6c881d5ea.webp",
+        "bytes": 89736
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-dashboard-1152-78375201e0c2.webp",
+        "bytes": 174542
+      }
+    ]
+  },
+  "tool-diagram": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3273725,
+    "placeholder": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAABwBQCdASoYABgAPwF2s1OrJySiqAgBYCAJaQDM13gGzJIoJYrx5FPNuZ/0YtLAIcce23CgAP62+1RdGZ4knoJnpN58wHuSuLeISurJQ8xJwDjsTTAE8YEgO9DxgBjd9OqSf8fp76ZfOGF47fWrzmy790lKawiQH1NLa/FvdXp4BDp5Xx07mIOHNCwlWCRNPiMhnJRTNglhgf4hR45LNC6j+mzWcWZb7qe39JB1Jf/RLoVEC+NVm4sAAAA=",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/tool-diagram-384-69d01915980a.avif",
+        "bytes": 14423
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-diagram-768-0f3f7d44804c.avif",
+        "bytes": 46879
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-diagram-1152-0073cb85ce74.avif",
+        "bytes": 91077
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/tool-diagram-384-7db34d82df96.webp",
+        "bytes": 28586
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-diagram-768-8799da5fac73.webp",
+        "bytes": 98442
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-diagram-1152-4d14cc666079.webp",
+        "bytes": 185894
+      }
+    ]
+  },
+  "tool-interview": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3095895,
+    "placeholder": "data:image/webp;base64,UklGRuYAAABXRUJQVlA4INoAAAAQBgCdASoYABgAPwFwrFGrJiQiqA1RYCAJaQATwDXBWge9UbNXS7ldj5xkTMdBnfm5Qos1wkflqAAA/u/SPpDAGwNagvEXNhyuAM/NILOtHMExezhVsx3aZV7P0vmTURFD8IOmpa5DpvTxB7k6XkePoGYfHHDc9lhusCyPPRB+dBv5b4WHObUwnXfz4VLSr+nng57PFr26148bKBJ90BgDqojKA022wndZT/MQmoA7OLAMKnI/cd0JBp5iIUY0N/a8vrT5AcbUYfS0T53HPOiMTz5JPkZBRZDgAA==",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/tool-interview-384-c5cae13ca554.avif",
+        "bytes": 11136
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-interview-768-6a65001604a3.avif",
+        "bytes": 40387
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-interview-1152-ff3c5fe30fe8.avif",
+        "bytes": 79062
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/tool-interview-384-4c144954a348.webp",
+        "bytes": 21644
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-interview-768-803412a8db79.webp",
+        "bytes": 82614
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-interview-1152-1d7b371eb32b.webp",
+        "bytes": 158592
+      }
+    ]
+  },
+  "tool-resume": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3028791,
+    "placeholder": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAADQBQCdASoYABgAPwF2s1QrJySjKAgBYCAJaQDPZYzkcU9Lu0yyiwQMZ4zdLaXl7Y/DZrBqFwIAAP6RSZPhmCzArwp10epxIUnQk/UmH46hRp2kORXpEtLxO0Raf+cn6pdOjZHJ70vE94bCW1mM1BU5UBf61nRgx2n9QSsmKMXbG0y1LNgt2nM+3+heJg8/DqiZpxXMRI+m94hurWo06YrvSrBQT9qNK+IrKv93D8XTyO/+A9fF1Fo2gctT4QpwMgobAAAA",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/tool-resume-384-5cf2b8a010fa.avif",
+        "bytes": 11792
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-resume-768-f79588b41b5e.avif",
+        "bytes": 37317
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-resume-1152-ae1dd106e2f5.avif",
+        "bytes": 74117
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/tool-resume-384-45aa97c7f2ff.webp",
+        "bytes": 22822
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-resume-768-f8b8a175f33a.webp",
+        "bytes": 76932
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-resume-1152-554e3a49653f.webp",
+        "bytes": 147822
+      }
+    ]
+  },
+  "tool-writing": {
+    "width": 1254,
+    "height": 1254,
+    "originalBytes": 3364258,
+    "placeholder": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAACwBQCdASoYABgAPwF2slQrJySjKAgBYCAJaQDL4Y0Wb1e+GSXkw9Ivg6+1a5S443wUXKmPHoAA/ug3lq0+okL7BVoM/SHUvmv8SeSDY0XlrWJDx+EIgsxhcpPWfrmlqPiOPU/HXJWA00KeTlNG26si+WhOcNk88GFLVpF9LLuqdfGrt4PjWRdps4zlpaYakgwOUzkFiLKRb/MR/zSmhtDvIDSiKR101Y7YMKWvaXv7sh1fS4EG8Zn0mVk+LsnBZLn9vIqE0+slQD3QAAA=",
+    "avif": [
+      {
+        "width": 384,
+        "src": "/media/tool-writing-384-46bb09160025.avif",
+        "bytes": 14233
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-writing-768-69e4f654ef15.avif",
+        "bytes": 48986
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-writing-1152-72ccff79568d.avif",
+        "bytes": 95186
+      }
+    ],
+    "webp": [
+      {
+        "width": 384,
+        "src": "/media/tool-writing-384-a90af8d36c9e.webp",
+        "bytes": 29158
+      },
+      {
+        "width": 768,
+        "src": "/media/tool-writing-768-c4212070287e.webp",
+        "bytes": 104282
+      },
+      {
+        "width": 1152,
+        "src": "/media/tool-writing-1152-fdb3a3fb4870.webp",
+        "bytes": 195110
+      }
+    ]
   }
 }

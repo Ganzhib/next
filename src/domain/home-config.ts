@@ -3,6 +3,7 @@ import type { SiteSettings, Placement, Product, HomeModule } from "./models";
 import { defaultSettings } from "./seed";
 import { normalizeHomeModules, campusDirections } from "./campus";
 import { careerJourney } from "./journey";
+import { defaultToolCards } from "./tool-collection";
 
 export const homeSections = [
   { id: "stages", label: "求职方向导航", hint: "顶部五个求职方向的快捷入口" },
@@ -139,12 +140,13 @@ export function homeContent(
 ): HomeContent {
   const groups = journeyGroups(products, placements, settings.homeContent);
   const defaults: HomeContent = {
-    introKicker: "不止求职 / LIFE ON CAMPUS",
-    introTitle: "学好一门课，\n做出一个好项目。",
-    introDescription: "从日常学习到毕业选择，找到适合你的工具。",
-    journeyTitle: "选一个方向，找到趁手的工具。",
+    introKicker: "TOOLBOX / 工具集合",
+    introTitle: "少一点寻找，\n多一点完成。",
+    introDescription: "把工作、求职和创作中真正好用的工具放在一起。无需复杂导航，点开就能用。",
+    journeyTitle: "现在需要什么？",
     campusTitle: "在学校，也有自己的下一程。",
     contributionTitle: "还有什么学习难题，想让工具帮帮忙？",
+    tools: defaultToolCards,
     cards: [
       ...groups.map((s) => ({
         id: `career-${s.id}`,
@@ -170,6 +172,7 @@ export function homeContent(
   return {
     ...defaults,
     ...settings.homeContent,
+    tools: settings.homeContent?.tools ?? defaults.tools,
     cards: defaults.cards.map((card) => ({
       ...card,
       ...settings.homeContent?.cards.find((c) => c.id === card.id),

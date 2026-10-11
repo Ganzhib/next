@@ -20,9 +20,10 @@ for (const filename of (await readdir(source)).filter(name => name.endsWith('.pn
   for (const size of widths) {
     for (const format of ['avif', 'webp']) {
       const pipeline = sharp(input).resize({ width: size, withoutEnlargement: true });
+      const generatedTool = id.startsWith('tool-');
       const buffer = await (format === 'avif'
-        ? pipeline.avif({ quality: 55, effort: 6, chromaSubsampling: '4:4:4' })
-        : pipeline.webp({ quality: 80, effort: 6, smartSubsample: true })).toBuffer();
+        ? pipeline.avif({ quality: generatedTool ? 45 : 55, effort: 6, chromaSubsampling: '4:4:4' })
+        : pipeline.webp({ quality: generatedTool ? 72 : 80, effort: 6, smartSubsample: true })).toBuffer();
       const hash = createHash('sha256').update(buffer).digest('hex').slice(0, 12);
       const file = `${id}-${size}-${hash}.${format}`;
       await writeFile(resolve(output, file), buffer);

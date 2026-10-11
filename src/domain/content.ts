@@ -16,6 +16,20 @@ export const linkSchema = z
   }, "请使用站内绝对路径或 HTTPS 链接");
 export const imageSchema = linkSchema;
 const text = z.string().max(400);
+export const toolCardSchema = z.object({
+  id: z.string().min(1).max(80),
+  name: z.string().min(1).max(80),
+  category: z.string().max(80),
+  description: text,
+  action: z.string().min(1).max(80),
+  href: linkSchema,
+  image: imageSchema,
+  alt: text,
+  download: z.boolean(),
+  enabled: z.boolean(),
+  order: z.number().int().min(0).max(999),
+});
+export type ToolCard = z.infer<typeof toolCardSchema>;
 export const homeContentSchema = z.object({
   introKicker: text,
   introTitle: text,
@@ -23,6 +37,7 @@ export const homeContentSchema = z.object({
   journeyTitle: text,
   campusTitle: text,
   contributionTitle: text,
+  tools: z.array(toolCardSchema).max(24).optional(),
   cards: z
     .array(
       z.object({

@@ -25,6 +25,23 @@
 .toolbox-section .product-grid {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
 }
+.tool-collection-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 900px) {
+  .tool-collection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .tool-collection-grid {
+    grid-template-columns: 1fr;
+  }
+  .tool-collection-grid .journey-card:last-child {
+    display: flex;
+    max-width: none;
+  }
+}
 // 优先使用已安装字体，不依赖外部字体服务，离线时保持稳定排版。
 * {
   box-sizing: border-box;
@@ -312,6 +329,23 @@ textarea:focus-visible {
     top: 1px;
     font-size: 15px;
     background: var(--accent);
+  }
+}
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #d8e6f0;
+  border-radius: 10px;
+  background: #fff;
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    mix-blend-mode: multiply;
   }
 }
 .site-header nav {
@@ -1351,6 +1385,10 @@ textarea:focus-visible {
     width: 32px;
     height: 32px;
     font-size: 25px;
+  }
+  .brand-logo {
+    width: 34px;
+    height: 34px;
   }
   .site-header nav {
     display: none;

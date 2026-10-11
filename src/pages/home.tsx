@@ -1,104 +1,75 @@
-import { Children, isValidElement, useState, type ReactNode } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { ArrowDownToLine, ArrowUpRight } from "lucide-react";
 import { useApp } from "../app/context";
-import { careerJourney } from "../domain/journey";
-import { homeModules } from "../domain/home-config";
-import { JourneyProducts } from "../components/journey-products";
-import { CampusExplore } from "../components/campus-explore";
-import { Icon, SearchInput } from "../components/ui";
+import { homeContent } from "../domain/home-config";
+import { visibleTools } from "../domain/tool-collection";
 
 export function Home() {
-  const { track, settings } = useApp();
-  const content = settings.homeContent;
-  const [query, setQuery] = useState("");
-  const navigate = useNavigate();
-  return (
-    <HomeCanvas>
-      <section className="hero campus-bridge container" id="intro">
-        <div className="hero-main">
-          <div className="hero-kicker">
-            {content?.introKicker ?? "不止求职 / LIFE ON CAMPUS"}
-          </div>
-          <h1>{content?.introTitle ?? "学好一门课，\n做出一个好项目。"}</h1>
-        </div>
-        <div className="campus-search">
-          <p>
-            {content?.introDescription ??
-              "从日常学习到毕业选择，找到适合你的工具。"}
-          </p>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              navigate(`/search?q=${encodeURIComponent(query)}`);
-            }}
-          >
-            <SearchInput
-              value={query}
-              onChange={setQuery}
-              placeholder="搜搜你现在需要的工具"
-            />
-          </form>
-          <div className="popular-searches">
-            <a href="#campus">看看校园探索</a>
-            <Link to="/products">浏览全部产品</Link>
-          </div>
-        </div>
-      </section>
-      <section className="stage-ribbon" id="stages">
-        <div className="container">
-          <span className="ribbon-label">求职这一程</span>
-          {careerJourney.map((stage, index) => (
-            <a
-              key={stage.id}
-              href={`#journey-${stage.id}`}
-              onClick={() =>
-                void track("hero_intent_selected", { query: stage.name })
-              }
-            >
-              <span className="step-num">0{index + 1}</span>
-              <Icon name={stage.icon} size={18} />
-              {content?.cards.find((c) => c.id === `career-${stage.id}`)
-                ?.title ?? stage.name}
-            </a>
-          ))}
-        </div>
-      </section>
-      <section className="container section featured-section" id="featured">
-        <JourneyProducts />
-      </section>
-      <section className="container section campus-section" id="campus">
-        <CampusExplore />
-      </section>
-      <section
-        className="container contribution campus-contribution"
-        id="contribution"
-      >
-        <h2>
-          {content?.contributionTitle ?? "还有什么学习难题，想让工具帮帮忙？"}
-        </h2>
-        <Link className="button secondary" to="/feedback">
-          告诉我们
-        </Link>
-      </section>
-    </HomeCanvas>
-  );
-}
+  const { settings, products, placements } = useApp();
+  const content = homeContent(settings, products, placements);
+  const tools = visibleTools(content.tools);
 
-function HomeCanvas({ children }: { children: ReactNode }) {
-  const { settings, placements } = useApp();
-  const modules = homeModules(settings, placements);
-  const nodes = Children.toArray(children).filter(
-    isValidElement<{ id?: string }>,
-  );
-  const moduleFor = (node: (typeof nodes)[number]) =>
-    modules.find((module) => module.id === node.props.id);
-  const orderFor = (node: (typeof nodes)[number]) =>
-    moduleFor(node)?.order ?? 0;
   return (
     <div className="home">
-      {nodes
-        .filter((node) => moduleFor(node)?.enabled !== false)
-        .sort((a, b) => orderFor(a) - orderFor(b))}
+      <section className="hero campus-bridge container" id="intro">
+        <div className="hero-main">
+          <div className="hero-kicker">{content.introKicker || "TOOLBOX / 工具集合"}</div>
+          <h1>{content.introTitle || "少一点寻找，\n多一点完成。"}</h1>
+        </div>
+        <div className="campus-search">
+          <p>{content.introDescription || "把工作、求职和创作中真正好用的工具放在一起。无需复杂导航，点开就能用。"}</p>
+          <div className="popular-searches">
+            <a className="button" href="#tools">浏览全部工具</a>
+            <span>{tools.length} 款工具 · 持续更新</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="container section featured-section" id="tools">
+        <div className="section-title">
+          <div>
+            <span className="eyebrow">PICK A TOOL / 选择工具</span>
+            <h2>{content.journeyTitle || "现在需要什么？"}</h2>
+          </div>
+        </div>
+        <div className="journey-grid tool-collection-grid">
+          {tools.map((tool, index) => (
+            <article className="journey-card has-product" key={tool.id}>
+              <a
+                className="journey-illustration"
+                href={tool.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${tool.action}：${tool.name}`}
+              >
+                <img
+                  src={tool.image}
+                  alt={tool.alt}
+                  width="768"
+                  height="768"
+                  loading={index < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+                <span className="journey-frame-number">{String(index + 1).padStart(2, "0")}</span>
+              </a>
+              <h3>{tool.name}</h3>
+              <div className="journey-product">
+                <span className="journey-caption">{tool.category}</span>
+                <p>{tool.description}</p>
+              </div>
+              <div className="journey-card-footer">
+                <a className="button full secondary" href={tool.href} target="_blank" rel="noreferrer">
+                  {tool.action}
+                  {tool.download ? <ArrowDownToLine size={16} /> : <ArrowUpRight size={16} />}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="journey-summary">
+          <span>选一个趁手的工具，现在就开始。</span>
+          <span>效率 · 求职 · 创作</span>
+        </div>
+      </section>
     </div>
   );
 }

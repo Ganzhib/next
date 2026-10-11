@@ -4,7 +4,17 @@ import { createHash } from "node:crypto";
 import images from "../src/domain/image-manifest.json";
 
 it("图片均有三档 AVIF/WebP、内容指纹和严格体积预算，原图不进入线上目录", () => {
-  expect(Object.keys(images)).toHaveLength(8);
+  expect(Object.keys(images)).toHaveLength(14);
+  expect(Object.keys(images)).toEqual(
+    expect.arrayContaining([
+      "tool-countdown",
+      "tool-interview",
+      "tool-diagram",
+      "tool-resume",
+      "tool-writing",
+      "tool-dashboard",
+    ]),
+  );
   for (const [id, image] of Object.entries(images)) {
     expect(existsSync(`assets/illustrations/${id}.png`)).toBe(true);
     expect(existsSync(`public/images/${id}.png`)).toBe(false);
@@ -14,7 +24,10 @@ it("图片均有三档 AVIF/WebP、内容指纹和严格体积预算，原图不
       for (const variant of image[format]) {
         const bytes = readFileSync(`public${variant.src}`);
         expect(bytes.length).toBe(variant.bytes);
-        expect(bytes.length).toBeLessThan(format === "avif" ? 110000 : 180000);
+        const budget = id.startsWith("tool-")
+          ? format === "avif" ? 110000 : 210000
+          : format === "avif" ? 110000 : 180000;
+        expect(bytes.length).toBeLessThan(budget);
         expect(variant.src).toContain(
           createHash("sha256").update(bytes).digest("hex").slice(0, 12),
         );

@@ -68,9 +68,9 @@ export const defaultProfile = (): Profile => ({
 });
 export const defaultSettings: SiteSettings = {
   id: "site",
-  brand: "下一程",
-  tagline: "好工具，让下一程更从容。",
-  announcement: "从准备到出发，找到你的下一步。",
+  brand: "淘气工具铺",
+  tagline: "好工具，应该让事情变简单。",
+  announcement: "少一点寻找，多一点完成。",
   showAnnouncement: true,
   showDemos: false,
   theme: "light",

@@ -96,7 +96,7 @@ export function SimpleHomepage() {
     setDirty(true);
   }
   const textField = (
-    key: Exclude<keyof HomeContent, "cards">,
+    key: Exclude<keyof HomeContent, "cards" | "tools">,
     label: string,
     multiline = false,
   ) => (
